@@ -1,6 +1,17 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
+const linkStyles = {
+    display: "inline-block",
+    textAlign: "center",
+    width: "100px",
+    padding: "12px",
+    margin: "6px 6px 6px",
+    background: "white",
+    textDecoration: "none",
+    color: "black",
+};
+
 function NavBar({ user, onSetUser }) {
     function handleLogout() {
         fetch("/logout", { method: "DELETE"})
@@ -12,21 +23,40 @@ function NavBar({ user, onSetUser }) {
     }
 
     return (
-        <div>
-            <NavLink to='/' exact>
+        <div className="navbar">
+            <NavLink 
+                to='/' 
+                exact
+                style={linkStyles}
+                activeStyle={{
+                    background: "beige"
+                }}
+            >
                 Home
             </NavLink>
             {user ?
                 <>
-                    <h2>Hello, {user.username}</h2>
-                    <button onClick={handleLogout}>Logout</button>
+                    <button className="logout" onClick={handleLogout}>Logout</button>
+                    <h2 className="greeting">Hello, {user.username}</h2>
                 </>
                 :
                 <>
-                    <NavLink to='/login'>
+                    <NavLink 
+                        to='/login'
+                        style={linkStyles}
+                        activeStyle={{
+                            background: "beige"
+                        }}
+                    >
                         Login
                     </NavLink>
-                    <NavLink to='/signup'>
+                    <NavLink 
+                        to='/signup'
+                        style={linkStyles}
+                        activeStyle={{
+                            background: "beige"
+                        }}
+                    >
                         Sign Up
                     </NavLink>
                 </>

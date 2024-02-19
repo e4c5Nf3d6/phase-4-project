@@ -24,10 +24,10 @@ function App() {
                 <NavBar user={user} onSetUser={setUser} />
                 <Switch>
                     <Route path='/signup'>
-                        <SignUp />
+                        <SignUp onLogin={setUser} />
                     </Route>
                     <Route path='/login'>
-                        <Login onLogin={setUser}/>
+                        <Login onLogin={setUser} />
                     </Route>
                     <Route path='/'>
                         <h1>Home</h1>
