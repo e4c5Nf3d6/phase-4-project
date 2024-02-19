@@ -1,77 +1,87 @@
 import React, { useState } from "react";
+import { useFormik } from "formik";
+import * as yup from "yup";
 import { useHistory } from "react-router-dom";
 
 function SignUp({ onLogin }) {
     const history = useHistory()
-    const [username, setUsername] = useState("")
-    const [password, setPassword] = useState("")
-    const [passwordConfirmation, setPasswordConfirmation] = useState("")
-    const [error, setError] = useState("")
+    const [showError, setShowError] = useState(false)
 
-    function handleSubmit(e) {
-        e.preventDefault();
-        setError("");
+    const formSchema = yup.object().shape({
+        username: yup.string()
+            .required("Please enter a username"),
+        password: yup.string()
+            .required("Please enter a password"),
+        password_confirmation: yup.string().required('Please retype your password')
+            .oneOf([yup.ref('password')], 'Your passwords do not match.')
+    });
 
-        fetch("/signup", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                username: username,
-                password: password,
-                password_confirmation: passwordConfirmation
-            })
-        })
-            .then((r) => {
-                if (r.ok) {
+    const formik = useFormik({
+        initialValues: {
+            username: "",
+            password: "",
+            password_confirmation: ""
+        },
+        validationSchema: formSchema,
+        onSubmit: (values) => {
+            fetch("/signup", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(values, null, 2)
+            }).then((r) => {
+                if (r.status == 201) {
                     r.json()
                     .then((user) => {
                         onLogin(user)
-                        history.push("/")
+                        history.push('/')
                     })
-                } else {
-                    r.json()
-                    .then((err) => setError(err.error))
+                } else if (r.status == 422) {
+                    setShowError(true)
                 }
             })
-
-        setUsername("")
-        setPassword("")
-        setPasswordConfirmation("")
-    }
+        }
+    })
 
     return (
-        <>
-            <form onSubmit={handleSubmit}>
+        <div>
+            <h1>Sign Up</h1>
+            <form onSubmit={formik.handleSubmit}>
+                {showError ? <p style={{ color: "red" }}> Username already taken</p> : null}
+                <label htmlFor="username">Username</label>
                 <input 
                     type="text"
+                    id="username"
                     name="username"
-                    placeholder="Username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    value={formik.values.username}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                 />
+                {formik.touched.username && formik.errors.username ? <p style={{ color: "red" }}> {formik.errors.username}</p> : null}
+                <label htmlFor="password">Password</label>
                 <input 
                     type="text"
+                    id="password"
                     name="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    value={formik.values.password}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                 />
+                {formik.touched.password && formik.errors.password ? <p style={{ color: "red" }}> {formik.errors.password}</p> : null}
+                <label htmlFor="password_confirmation">Password Confirmation</label>
                 <input 
                     type="text"
-                    name="password"
-                    placeholder="Confirm Password"
-                    value={passwordConfirmation}
-                    onChange={(e) => setPasswordConfirmation(e.target.value)}
+                    id="password_confirmation"
+                    name="password_confirmation"
+                    value={formik.values.password_confirmation}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                 />
+                {formik.touched.password_confirmation && formik.errors.password_confirmation ? <p style={{ color: "red" }}> {formik.errors.password_confirmation}</p> : null}
                 <button type="submit">Sign Up</button>
             </form>    
-            <div>
-                <p>{error}</p>
-            </div>         
-        </>
-
+        </div>
     )
 }
 

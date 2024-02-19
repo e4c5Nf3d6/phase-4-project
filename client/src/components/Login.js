@@ -1,67 +1,74 @@
 import React, { useState } from "react";
+import { useFormik } from "formik";
+import * as yup from "yup";
 import { useHistory } from "react-router-dom";
 
 function Login({ onLogin }) {
     const history = useHistory()
-    const [username, setUsername] = useState("")
-    const [password, setPassword] = useState("")
-    const [error, setError] = useState("")
+    const [showError, setShowError] = useState(false)
 
-    function handleSubmit(e) {
-        e.preventDefault()
-        setError("")
+    const formSchema = yup.object().shape({
+        username: yup.string()
+            .required("Please enter your username"),
+        password: yup.string()
+            .required("Please enter your password"),
+    });
 
-        fetch("/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                username: username,
-                password: password
-            })
-        })
-            .then((r) => {
-                if (r.ok) {
+    const formik = useFormik({
+        initialValues: {
+            username: "",
+            password: ""
+        },
+        validationSchema: formSchema,
+        onSubmit: (values) => {
+            fetch("/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(values, null, 2)
+            }).then((r) => {
+                if (r.status == 200) {
                     r.json()
                     .then((user) => {
                         onLogin(user)
                         history.push('/')
                     })
-                } else {
-                    r.json()
-                    .then((err) => setError(err.error))
+                } else if (r.status == 401) {
+                    setShowError(true)
                 }
             })
-
-        setUsername("");
-        setPassword("");
-    }
+        }
+    })
     
     return (
-        <>
-            <form onSubmit={handleSubmit}>
+        <div>
+            <h1>Login</h1>
+            <form onSubmit={formik.handleSubmit}>
+                {showError ? <p style={{ color: "red" }}>Invalid username or password</p> : null}
+                <label htmlFor="username">Username</label>
                 <input 
                     type="text"
+                    id="username"
                     name="username"
-                    placeholder="Username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    value={formik.values.username}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                 />
+                {formik.touched.username && formik.errors.username ? <p style={{ color: "red" }}> {formik.errors.username}</p> : null}
+                <label htmlFor="password">Password</label>
                 <input 
                     type="text"
+                    id="password"
                     name="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    value={formik.values.password}
+                    onBlur={formik.handleBlur}
+                    onChange={formik.handleChange}
                 />
+                {formik.touched.password && formik.errors.password ? <p style={{ color: "red" }}> {formik.errors.password}</p> : null}
                 <button type="submit">Login</button>
-            </form> 
-            <div>
-                <p>{error}</p>
-            </div>         
-        </>
-      
+            </form>         
+        </div>
     )
 }
 
