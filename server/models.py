@@ -9,7 +9,7 @@ class User(db.Model, SerializerMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, nullable=False, unique=True)
-    _password_hash = db.Column(db.String, nullable=False)
+    _password_hash = db.Column(db.String)
 
     @hybrid_property
     def password_hash(self):
