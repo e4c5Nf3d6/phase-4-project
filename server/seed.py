@@ -3,16 +3,15 @@ from random import randint, choice as rc
 from faker import Faker
 
 from app import app
-from models import db, User
+from models import db, User, Player
 
 if __name__ == '__main__':
-
-    # fake = Faker()
 
     with app.app_context():
         
         print("Deleting records...")
         User.query.delete()
+        Player.query.delete()
 
         fake = Faker()
 
@@ -36,5 +35,33 @@ if __name__ == '__main__':
             users.append(user)
 
         db.session.add_all(users)
+
+        print("Creating players...")
+
+        players = []
+
+        names = [
+                    "Anatoly Karpov", 
+                    "Aron Nimzowitsch",
+                    "Fabiano Caruana",
+                    "Garry Kasparov", 
+                    "Magnus Carlsen", 
+                    "Miguel Najdorf",
+                    "Mikhail Tal",
+                    "Tigran Petrosian",
+                    "Vasyl Ivanchuk",
+                    "Viswanathan Anand"
+                ]
+        
+        for name in names:
+            player = Player(
+                name=name,
+                user_id=randint(1, 20)
+            )
+
+            players.append(player)
+
+        db.session.add_all(players)
+
         db.session.commit()
         print("Database seeded.")

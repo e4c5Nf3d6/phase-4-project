@@ -1,9 +1,9 @@
-from flask import request, session, make_response
+from flask import jsonify, request, session, make_response
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 
 from config import app, db, api
-from models import User
+from models import User, Player
 
 
 @app.route('/')
@@ -82,12 +82,42 @@ class Logout(Resource):
             return make_response({}, 204)
         
         return make_response({'error': '401 Unauthorized'}, 401)
+    
+class Players(Resource):
+    
+    def get(self):
+
+        players = [player.to_dict() for player in Player.query.all()]
+        
+        return make_response(jsonify(players), 200)
+    
+    def post(self):
+        request_json = request.get_json()
+
+        name = request_json.get('name')
+        user_id = session['user_id']
+
+        player = Player(
+            name=name,
+            user_id=user_id 
+        )
+
+        try:
+            db.session.add(player)
+            db.session.commit()
+
+            return make_response(player.to_dict(), 201)
+    
+        except IntegrityError:
+
+            return make_response({'error': '422 Unprocessable Entity'}, 422)
 
 
 api.add_resource(Signup, '/signup', endpoint='signup')
 api.add_resource(CheckSession, '/check_session', endpoint='check_session')
 api.add_resource(Login, '/login', endpoint='login')
 api.add_resource(Logout, '/logout', endpoint='logout')
+api.add_resource(Players, '/players', endpoint='players')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
