@@ -5,6 +5,7 @@ function SignUp({ onLogin }) {
     const history = useHistory()
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
+    const [passwordConfirmation, setPasswordConfirmation] = useState("")
     const [error, setError] = useState("")
 
     function handleSubmit(e) {
@@ -18,7 +19,8 @@ function SignUp({ onLogin }) {
             },
             body: JSON.stringify({
                 username: username,
-                password: password
+                password: password,
+                password_confirmation: passwordConfirmation
             })
         })
             .then((r) => {
@@ -36,6 +38,7 @@ function SignUp({ onLogin }) {
 
         setUsername("")
         setPassword("")
+        setPasswordConfirmation("")
     }
 
     return (
@@ -54,6 +57,13 @@ function SignUp({ onLogin }) {
                     placeholder="Password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                />
+                <input 
+                    type="text"
+                    name="password"
+                    placeholder="Confirm Password"
+                    value={passwordConfirmation}
+                    onChange={(e) => setPasswordConfirmation(e.target.value)}
                 />
                 <button type="submit">Sign Up</button>
             </form>    

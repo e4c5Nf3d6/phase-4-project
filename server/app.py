@@ -17,23 +17,30 @@ class Signup(Resource):
 
         username = request_json.get('username')
         password = request_json.get('password')
+        password_confirmation = request_json.get('password_confirmation')
 
         user = User(
             username = username
         )
-        user.password_hash = password
 
-        try:
-            db.session.add(user)
-            db.session.commit()
+        if password == password_confirmation:
+            user.password_hash = password
 
-            session['user_id'] = user.id
+            try:
+                db.session.add(user)
+                db.session.commit()
 
-            return make_response(user.to_dict(), 201)
+                session['user_id'] = user.id
+
+                return make_response(user.to_dict(), 201)
         
-        except IntegrityError:
+            except IntegrityError:
 
-            return make_response({'error': '422 Unprocessable Entity'}, 422)
+                return make_response({'error': '422 Unprocessable Entity'}, 422)
+        
+        else:
+            
+            return make_response({'error': '403 Forbidden'}, 403)
         
 class CheckSession(Resource):
 
