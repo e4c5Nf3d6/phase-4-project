@@ -1,6 +1,7 @@
 body {
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
 }
 
 .navbar {
@@ -25,4 +26,27 @@ body {
     color: white;
     display: inline;
     float: right;
+}
+
+form {
+    display: block;
+    text-align: center;
+}
+
+input[type=text] {
+    width: 500px;
+    padding: 12px 20px;
+    margin: 12px auto;
+    display: block;
+    box-sizing: border-box;
+}
+
+button[type=submit] {
+    background-color: black;
+    border: none;
+    color: white;
+    padding: 12px 50px;
+    margin: 12px;
+    text-align: center;
+    font-size: 16px;  
 }
