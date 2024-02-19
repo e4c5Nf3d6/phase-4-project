@@ -14,6 +14,7 @@ flask-restful = "*"
 flask-cors = "*"
 faker = "*"
 honcho = "*"
+flask-bcrypt = "1.0.1"
 
 [dev-packages]
 
