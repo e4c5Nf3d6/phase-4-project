@@ -140,20 +140,20 @@ class Games(Resource):
       
         if user_id:
 
-            game = Game(
-                pgn=pgn,
-                white_player_id=white_player.id,
-                black_player_id=black_player.id,
-                user_id=user_id
-            )
-
             try:
+                game = Game(
+                    pgn=pgn,
+                    white_player_id=white_player.id,
+                    black_player_id=black_player.id,
+                    user_id=user_id
+                )
+
                 db.session.add(game)
                 db.session.commit()
 
                 return make_response(game.to_dict(), 201)
             
-            except IntegrityError:
+            except ValueError:
 
                 return make_response({'error': '422 Unprocessable Entity'}, 422)
             

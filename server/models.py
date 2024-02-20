@@ -1,5 +1,6 @@
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy_serializer import SerializerMixin
+from sqlalchemy.orm import validates
 from sqlalchemy.ext.associationproxy import association_proxy
 
 from config import db, bcrypt
@@ -76,6 +77,12 @@ class Game(db.Model, SerializerMixin):
     white_player_id = db.Column(db.Integer, db.ForeignKey('players.id'))
     black_player_id = db.Column(db.Integer, db.ForeignKey('players.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    @validates("pgn")
+    def validate_pgn(self, key, pgn):
+        if '1.' not in pgn:
+            raise ValueError('Failed PGN validation')
+        return pgn
 
     user = db.relationship('User', back_populates='games')
     white_player = db.relationship('Player', foreign_keys=[white_player_id], back_populates='games_with_white')

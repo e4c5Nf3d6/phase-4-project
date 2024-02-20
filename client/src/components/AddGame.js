@@ -15,8 +15,8 @@ function AddGame({ games, onSetGames, players, onSetPlayers }) {
     ];
 
     function handleClose() {
-        setShowError(false)
         formik.resetForm()
+        setShowError(false)
         setWhite(null)
         setBlack(null)
         setIsEditing(false)
@@ -48,7 +48,6 @@ function AddGame({ games, onSetGames, players, onSetPlayers }) {
                 r.json()
                 .then((player) => {
                     onSetPlayers([...players, player])
-                    setShowError(false)
                     
                     if (color == "white_player") {
                         setWhite({ value: player.name, label: player.name })
@@ -104,7 +103,7 @@ function AddGame({ games, onSetGames, players, onSetPlayers }) {
             {isEditing ? 
                 <div className="add">
                     <h3>Add a Game</h3>
-                    {showError ? <p style={{ color: "red" }}>Error</p> : null}
+                    {showError ? <p style={{ color: "red" }}>Failed PGN Validation</p> : null}
                     <form onSubmit={formik.handleSubmit}>
                         <input 
                             type="text"
