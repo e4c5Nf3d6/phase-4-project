@@ -8,6 +8,8 @@ import Home from "./Home";
 
 function App() {
     const [user, setUser] = useState(null);
+    const [players, setPlayers] = useState([]);
+    const [games, setGames] = useState([]);
 
     useEffect(() => {
         fetch("/check_session")
@@ -15,6 +17,36 @@ function App() {
             if (r.ok) {
                 r.json()
                 .then((user) => setUser(user))
+            }
+        })
+    }, []);
+
+    useEffect(() => {
+        fetch("/players", { method: 'GET' })
+        .then((r) => {
+            if (r.ok) {
+                r.json()
+                .then((players) => setPlayers(players))
+            }
+        })
+    }, []);
+
+    const sortedPlayers = [...players].sort(function (a, b) {
+        if (a.name < b.name) {
+          return -1;
+        }
+        if (a.name > b.name) {
+          return 1;
+        }
+        return 0;
+    });
+
+    useEffect(() => {
+        fetch("/games", { method: 'GET' })
+        .then((r) => {
+            if (r.ok) {
+                r.json()
+                .then((games) => setGames(games))
             }
         })
     }, [])
@@ -31,7 +63,12 @@ function App() {
                         <Login onLogin={setUser} />
                     </Route>
                     <Route path='/'>
-                        <Home user={user} />
+                        <Home 
+                            user={user} 
+                            players={sortedPlayers} 
+                            onSetPlayers={setPlayers} 
+                            games={games}
+                        />
                     </Route>
                 </Switch>        
             </>

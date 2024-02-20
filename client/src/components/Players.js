@@ -21,7 +21,7 @@ function Players({ user, players, onSetPlayers }) {
             {user ? <AddPlayer players={players} onSetPlayers={onSetPlayers} /> : null}
             {filteredPlayers.map(function(player) {
                 return (
-                    <p>{player.name}</p>
+                    <p key={player.id}>{player.name}</p>
                 )
             })}
         </div>

@@ -78,3 +78,7 @@ button {
 .add-player input[type=text] {
     text-align: center;
 }
+
+ct-pgn-viewer.ct-pgn-viewer move-list .ct-move-list-container {
+    height:290px;
+}
