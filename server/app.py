@@ -171,7 +171,14 @@ class GamesByID(Resource):
     
     def patch(self, id):
 
-        data = request.get_json()
+        request_json = request.get_json()
+
+        pgn = request_json.get('pgn')
+        white_player_name = request_json.get('white_player')  
+        black_player_name = request_json.get('black_player')  
+
+        white_player = Player.query.filter(Player.name == white_player_name).first()
+        black_player = Player.query.filter(Player.name == black_player_name).first()
 
         game = Game.query.filter(Game.id == id).first()
 
@@ -181,8 +188,9 @@ class GamesByID(Resource):
 
             try: 
                 
-                for attr in data:
-                    setattr(game, attr, data[attr])
+                game.pgn = pgn
+                game.white_player_id = white_player.id
+                game.black_player_id = black_player.id
 
                 db.session.add(game)
                 db.session.commit()

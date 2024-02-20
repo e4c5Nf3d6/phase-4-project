@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { setNestedObjectValues, useFormik, useFormikContext } from "formik";
+import { useFormik } from "formik";
 import * as yup from "yup";
 import CreatableSelect from 'react-select/creatable';
+import useSelectData from "../hooks/useSelectData";
 
 
 function AddGame({ games, onSetGames, players, onSetPlayers }) {
@@ -22,42 +23,42 @@ function AddGame({ games, onSetGames, players, onSetPlayers }) {
         setIsEditing(false)
     }
 
-    function handleSelect(color, player) {
-        if (player == null) {
-            formik.setFieldValue(color, '');   
-        } else {
-            formik.setFieldValue(color, player["value"]);
-        }
+    // function handleSelect(color, player) {
+    //     if (player == null) {
+    //         formik.setFieldValue(color, '');   
+    //     } else {
+    //         formik.setFieldValue(color, player["value"]);
+    //     }
 
-        if (color == "white_player") {
-            setWhite(player)
-        } else if (color == "black_player") {
-            setBlack(player)
-        }
-    }
+    //     if (color == "white_player") {
+    //         setWhite(player)
+    //     } else if (color == "black_player") {
+    //         setBlack(player)
+    //     }
+    // }
 
-    function handleCreate(color, newPlayer) {
-        fetch("/players", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({name: newPlayer}, null, 2)
-        }).then((r) => {
-            if (r.status == 201) {
-                r.json()
-                .then((player) => {
-                    onSetPlayers([...players, player])
+    // function handleCreate(color, newPlayer) {
+    //     fetch("/players", {
+    //         method: "POST",
+    //         headers: {
+    //             "Content-Type": "application/json"
+    //         },
+    //         body: JSON.stringify({name: newPlayer}, null, 2)
+    //     }).then((r) => {
+    //         if (r.status == 201) {
+    //             r.json()
+    //             .then((player) => {
+    //                 onSetPlayers([...players, player])
                     
-                    if (color == "white_player") {
-                        setWhite({ value: player.name, label: player.name })
-                    } else if (color == "black_player") {
-                        setBlack({ value: player.name, label: player.name })
-                    }
-                })
-            }
-        })
-    }
+    //                 if (color == "white_player") {
+    //                     setWhite({ value: player.name, label: player.name })
+    //                 } else if (color == "black_player") {
+    //                     setBlack({ value: player.name, label: player.name })
+    //                 }
+    //             })
+    //         }
+    //     })
+    // }
 
     const formSchema = yup.object().shape({
         pgn: yup.string()
@@ -97,6 +98,8 @@ function AddGame({ games, onSetGames, players, onSetPlayers }) {
             })
         }
     })
+
+    const { handleSelect, handleCreate } = useSelectData(formik, setWhite, setBlack, players, onSetPlayers)
 
     return (
         <div>

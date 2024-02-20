@@ -81,6 +81,7 @@ if __name__ == '__main__':
             name="Akiba Rubinstein",
             user_id=1
         )
+        players.append(rubinstein)
 
         names = [
                     "Fabiano Caruana",
@@ -241,7 +242,8 @@ if __name__ == '__main__':
                 1-0
             """,
             white_player_id=5,
-            black_player_id=6
+            black_player_id=6,
+            user_id=1
         )
         games.append(game4)
 

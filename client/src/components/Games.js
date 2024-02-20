@@ -17,7 +17,15 @@ function Games({ user, games, onSetGames, players, onSetPlayers }) {
                 /> : null}
             {games.map(function(game) {
                 return (
-                    <GameDisplay key={game.id} game={game} />
+                    <GameDisplay 
+                        key={game.id} 
+                        game={game} 
+                        games={games}
+                        onSetGames={onSetGames} 
+                        players={players}
+                        onSetPlayers={onSetPlayers}
+                        user={user} 
+                    />
                 )
             })}
         </div>

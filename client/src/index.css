@@ -95,6 +95,32 @@ button {
     text-align: center;
 }
 
+.game-title {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    align-items: center;
+}
+
+.game-title button {
+    background-color: #E2D8D2;
+    border: #2D1F17 solid 1.5px;
+    width: 40px;
+    height: 40px;
+    padding: 0px;
+    margin: 0px 0px 0px 12px;
+}
+
+#edit {
+    width: 20px;
+    height: 20px;
+}
+
+#delete {
+    width: 25px;
+    height: 25px
+}
+
 .game-display {
     background-color: white;
     border: groove #2D1F17 3px;
