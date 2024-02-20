@@ -10,6 +10,12 @@ body {
     background-color: #2D1F17;
     text-align: center;
     padding: 10px;
+    display: grid;
+    grid-template-columns: 25% 50% 25%;
+}
+
+.links {
+    display: inline-block;
 }
 
 .logout {
@@ -27,6 +33,10 @@ body {
 .greeting {
     color: #F5EFEB;
     display: inline;
+    float: right;
+}
+
+.profile {
     float: right;
 }
 

@@ -24,42 +24,50 @@ function NavBar({ user, onSetUser }) {
 
     return (
         <div className="navbar">
-            <NavLink 
-                to='/' 
-                exact
-                style={linkStyles}
-                activeStyle={{
-                    background: "#E2D8D2"
-                }}
-            >
-                Home
-            </NavLink>
+            <br></br>
+            <div className="links">
+                <NavLink 
+                    to='/' 
+                    exact
+                    style={linkStyles}
+                    activeStyle={{
+                        background: "#E2D8D2"
+                    }}
+                >
+                    Home
+                </NavLink>
+                {user ?
+                    null
+                    :
+                    <>
+                        <NavLink 
+                            to='/login'
+                            style={linkStyles}
+                            activeStyle={{
+                                background: "#E2D8D2"
+                            }}
+                        >
+                            Login
+                        </NavLink>
+                        <NavLink 
+                            to='/signup'
+                            style={linkStyles}
+                            activeStyle={{
+                                background: "#E2D8D2"
+                            }}
+                        >
+                            Sign Up
+                        </NavLink>
+                    </>
+                }
+            </div>
             {user ?
-                <>
+                <div className="profile">
                     <button className="logout" onClick={handleLogout}>Logout</button>
                     <h2 className="greeting">Hello, {user.username}</h2>
-                </>
+                </div>
                 :
-                <>
-                    <NavLink 
-                        to='/login'
-                        style={linkStyles}
-                        activeStyle={{
-                            background: "#E2D8D2"
-                        }}
-                    >
-                        Login
-                    </NavLink>
-                    <NavLink 
-                        to='/signup'
-                        style={linkStyles}
-                        activeStyle={{
-                            background: "#E2D8D2"
-                        }}
-                    >
-                        Sign Up
-                    </NavLink>
-                </>
+                null
             }
         </div>
     )
