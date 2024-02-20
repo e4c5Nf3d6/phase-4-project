@@ -166,9 +166,15 @@ textarea {
 
 .warning {
     border: 2px solid #2D1F17;
+    background-color: #E2D8D2;
 }
 
 .confirm-button {
     background-color: darkred;
+    margin-right: 30px;
+}
+
+.submit-button {
+    background-color: #1B4914;
     margin-right: 30px;
 }

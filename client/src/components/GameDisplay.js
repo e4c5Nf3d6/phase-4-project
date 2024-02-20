@@ -25,7 +25,7 @@ function GameDisplay({ game, games, onSetGames, players, onSetPlayers, user }) {
             <div className="game-title">
                 <h3>{game.white_player.name} - {game.black_player.name}</h3>
                 {canEdit ? 
-                    <button onClick={() => setDisplay('editing')}><img id="edit" src="/edit.png" alt="edit icon" /></button>               
+                    <button onClick={() => {display === 'editing' ? setDisplay('game') : setDisplay('editing')}}><img id="edit" src="/edit.png" alt="edit icon" /></button>               
                     : null
                 }
                 {canEdit ? 

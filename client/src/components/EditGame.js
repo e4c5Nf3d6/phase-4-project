@@ -115,9 +115,9 @@ function EditGame({ game, games, onSetGames, players, onSetPlayers, onSetDisplay
                 />
                 {formik.errors.black_player ? <p style={{ color: "red" }}> {formik.errors.black_player}</p> : null}
                 </div>
-                <button type="submit">Submit</button>
+                <button className='submit-button' type="submit">Submit</button>
+                <button type="reset" onClick={handleClose}>Close</button>
             </form>
-            <button type="reset" onClick={handleClose}>Close</button>
         </div> 
     )
 }
