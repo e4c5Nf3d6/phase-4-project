@@ -3,7 +3,7 @@ from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 
 from config import app, db, api
-from models import User, Player, Game
+from models import User, Player, Game, Save
 
 
 @app.route('/')
@@ -179,17 +179,17 @@ class GamesByID(Resource):
 
         if user_id == game.user_id:
 
-            for attr in data:
-                setattr(game, attr, data[attr])
-
             try: 
+                
+                for attr in data:
+                    setattr(game, attr, data[attr])
 
                 db.session.add(game)
                 db.session.commit()
 
                 return make_response(game.to_dict(), 200)
             
-            except IntegrityError:
+            except ValueError:
                 
                 return make_response({'error': '422 Unprocessable Entity'}, 422)
             
@@ -213,6 +213,99 @@ class GamesByID(Resource):
         else:
 
             return make_response({'error': '403 Forbidden'}, 403)
+        
+class Saves(Resource):
+    
+    def get(self):
+
+        saves = [save.to_dict() for save in Save.query.all()]
+
+        return make_response(jsonify(saves), 200)
+    
+    def post(self):
+
+        request_json = request.get_json()
+
+        category = request_json.get('category')
+        game_id = request_json.get('game_id')
+
+        user_id = session['user_id']
+
+        if user_id:
+
+            try:
+
+                save = Save(
+                    user_id=user_id,
+                    game_id=game_id,
+                    category=category
+                )
+
+                db.session.add(save)
+                db.session.commit()
+
+                return make_response(save.to_dict(), 201)
+
+            except ValueError:
+
+                return make_response({'error': '422 Unprocessable Entity'}, 422)
+            
+        else:
+
+            return make_response({'error': '403 Forbidden'}, 403)
+        
+class SavesByID(Resource): 
+    
+    def get(self, id):
+
+        save = Save.query.filter(Save.id == id).first()
+
+        return make_response(save.to_dict(), 200)
+    
+    def patch(self, id):
+
+        data = request.get_json()
+
+        save = Save.query.filter(Save.id == id).first()
+
+        user_id = session['user_id']
+
+        if user_id == save.user_id:
+
+            try: 
+                
+                for attr in data:
+                    setattr(save, attr, data[attr])
+
+                db.session.add(save)
+                db.session.commit()
+
+                return make_response(save.to_dict(), 200)
+            
+            except ValueError:
+                
+                return make_response({'error': '422 Unprocessable Entity'}, 422)
+            
+        else:
+
+            return make_response({'error': '403 Forbidden'}, 403)
+    
+    def delete(self, id):
+
+        save = Save.query.filter(Save.id == id).first()
+
+        user_id = session['user_id']
+
+        if user_id == save.user_id:
+
+            db.session.delete(save)
+            db.session.commit()
+
+            return make_response({}, 204)
+        
+        else:
+
+            return make_response({'error': '403 Forbidden'}, 403)
 
 
 api.add_resource(Signup, '/signup', endpoint='signup')
@@ -222,6 +315,8 @@ api.add_resource(Logout, '/logout', endpoint='logout')
 api.add_resource(Players, '/players', endpoint='players')
 api.add_resource(Games, '/games', endpoint='games')
 api.add_resource(GamesByID, '/games/<int:id>', endpoint='games/<int:id>')
+api.add_resource(Saves, '/saves', endpoint='saves')
+api.add_resource(SavesByID, '/saves/<int:id>', endpoint='saves/<int:id>')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

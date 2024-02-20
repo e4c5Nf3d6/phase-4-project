@@ -14,7 +14,10 @@ class User(db.Model, SerializerMixin):
         '-players.games_with_black',
         '-games.user',
         '-games.white_player',
-        '-games.black_player'
+        '-games.black_player',
+        '-games.saves',
+        '-saves.user',
+        '-saves.game'
     )
 
     id = db.Column(db.Integer, primary_key=True)
@@ -23,6 +26,9 @@ class User(db.Model, SerializerMixin):
 
     players = db.relationship('Player', back_populates="user")
     games = db.relationship('Game', back_populates="user")
+    saves = db.relationship('Save', back_populates='user', cascade='all, delete-orphan')
+    saved_games = association_proxy('saves', 'game', 
+                                       creator=lambda game_obj: Save(game=game_obj))
 
     @hybrid_property
     def password_hash(self):
@@ -42,12 +48,15 @@ class Player(db.Model, SerializerMixin):
     serialize_rules = (
         '-user.players', 
         '-user.games',
+        '-user.saves',
         '-games_with_white.white_player', 
         '-games_with_white.black_player',
         '-games_with_white.user',
+        '-games_with_white.saves',
         '-games_with_black.white_player', 
         '-games_with_black.black_player',
-        '-games_with_black.user'
+        '-games_with_black.user',
+        '-games_with_black.saves'
     )
 
     id = db.Column(db.Integer, primary_key=True)
@@ -59,11 +68,12 @@ class Player(db.Model, SerializerMixin):
     games_with_black = db.relationship('Game', primaryjoin="Player.id==Game.black_player_id", back_populates='black_player')
 
 class Game(db.Model, SerializerMixin):
-    __tablename__ ='games'
+    __tablename__ = 'games'
 
     serialize_rules = (
         '-user.games', 
         '-user.players',
+        '-user.saves',
         '-white_player.games_with_white', 
         '-white_player.games_with_black',
         '-white_player.user',
@@ -87,3 +97,27 @@ class Game(db.Model, SerializerMixin):
     user = db.relationship('User', back_populates='games')
     white_player = db.relationship('Player', foreign_keys=[white_player_id], back_populates='games_with_white')
     black_player = db.relationship('Player', foreign_keys=[black_player_id], back_populates='games_with_black')
+    saves = db.relationship('Save', back_populates='game', cascade='all, delete-orphan')
+    users = association_proxy('saves', 'user',
+                              creator=lambda user_obj: Save(user=user_obj))
+
+class Save(db.Model, SerializerMixin):
+    __tablename__ = 'saves'
+
+    serialize_rules = (
+        '-user.games',
+        '-user.players', 
+        '-user.saves',
+        '-game.user',
+        '-game.white_player',
+        '-game.black_player',
+        '-game.saves'
+    )
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    game_id = db.Column(db.Integer, db.ForeignKey('games.id'))
+    category = db.Column(db.String)
+
+    user = db.relationship('User', back_populates='saves')
+    game = db.relationship('Game', back_populates='saves')
