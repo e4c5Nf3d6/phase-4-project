@@ -3,7 +3,7 @@ from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 
 from config import app, db, api
-from models import User, Player
+from models import User, Player, Game
 
 
 @app.route('/')
@@ -97,20 +97,119 @@ class Players(Resource):
         name = request_json.get('name')
         user_id = session['user_id']
 
-        player = Player(
-            name=name,
-            user_id=user_id 
-        )
+        if user_id: 
 
-        try:
-            db.session.add(player)
+            player = Player(
+                name=name,
+                user_id=user_id 
+            )
+
+            try:
+                db.session.add(player)
+                db.session.commit()
+
+                return make_response(player.to_dict(), 201)
+        
+            except IntegrityError:
+
+                return make_response({'error': '422 Unprocessable Entity'}, 422)
+        
+        else: 
+
+            return make_response({'error': '403 Forbidden'}, 403)
+
+class Games(Resource):
+
+    def get(self):
+        
+        games = [game.to_dict() for game in Game.query.all()]
+
+        return make_response(jsonify(games), 200)
+    
+    def post(self):
+        request_json = request.get_json()
+
+        pgn = request_json.get('pgn')
+        white_player_id = request_json.get('white_player_id')  
+        black_player_id = request_json.get('black_player_id')  
+
+        user_id = session['user_id']
+      
+        if user_id:
+
+            game = Game(
+                pgn=pgn,
+                white_player_id=white_player_id,
+                black_player_id=black_player_id,
+                user_id=user_id
+            )
+
+            try:
+                db.session.add(game)
+                db.session.commit()
+
+                return make_response(game.to_dict(), 201)
+            
+            except IntegrityError:
+
+                return make_response({'error': '422 Unprocessable Entity'}, 422)
+            
+        else:
+
+            return make_response({'error': '403 Forbidden'}, 403)
+
+class GamesByID(Resource):
+
+    def get(self, id):
+
+        game = Game.query.filter(Game.id == id).first()
+
+        return make_response(game.to_dict(), 200)
+    
+    def patch(self, id):
+
+        data = request.get_json()
+
+        game = Game.query.filter(Game.id == id).first()
+
+        user_id = session['user_id']
+
+        if user_id == game.user_id:
+
+            for attr in data:
+                setattr(game, attr, data[attr])
+
+            try: 
+
+                db.session.add(game)
+                db.session.commit()
+
+                return make_response(game.to_dict(), 200)
+            
+            except IntegrityError:
+                
+                return make_response({'error': '422 Unprocessable Entity'}, 422)
+            
+        else:
+
+            return make_response({'error': '403 Forbidden'}, 403)
+    
+    def delete(self, id):
+
+        game = Game.query.filter(Game.id == id).first()
+
+        user_id = session['user_id']
+
+        if user_id == game.user_id:
+
+            db.session.delete(game)
             db.session.commit()
 
-            return make_response(player.to_dict(), 201)
-    
-        except IntegrityError:
+            return make_response({}, 204)
+        
+        else:
 
-            return make_response({'error': '422 Unprocessable Entity'}, 422)
+            return make_response({'error': '403 Forbidden'}, 403)
 
 
 api.add_resource(Signup, '/signup', endpoint='signup')
@@ -118,6 +217,8 @@ api.add_resource(CheckSession, '/check_session', endpoint='check_session')
 api.add_resource(Login, '/login', endpoint='login')
 api.add_resource(Logout, '/logout', endpoint='logout')
 api.add_resource(Players, '/players', endpoint='players')
+api.add_resource(Games, '/games', endpoint='games')
+api.add_resource(GamesByID, '/games/<int:id>', endpoint='games/<int:id>')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
