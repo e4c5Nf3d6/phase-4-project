@@ -26,6 +26,7 @@ function useSelectData(formik, setWhite, setBlack, players, onSetPlayers) {
                 r.json()
                 .then((player) => {
                     onSetPlayers([...players, player])
+                    formik.setFieldValue(color, player.name)
                     
                     if (color == "white_player") {
                         setWhite({ value: player.name, label: player.name })

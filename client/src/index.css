@@ -134,6 +134,41 @@ ct-pgn-viewer.ct-pgn-viewer move-list .ct-move-list-container {
     height:225px;
 }
 
+.select label {
+    margin: 10px;
+    display: block;
+}
+
 .select {
-    margin: 10px
+    margin: 10px;
+}
+
+.select-edit {
+    margin: 10px;
+    display: grid;
+    grid-template-columns: 20% 80%;
+    align-items: center;
+}
+
+textarea {
+    width: 100%;
+    height: 150px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+    font-size: 16px;
+    resize: none;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+  }
+
+.warning {
+    border: 2px solid #2D1F17;
+}
+
+.confirm-button {
+    background-color: darkred;
+    margin-right: 30px;
 }

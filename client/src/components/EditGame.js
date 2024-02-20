@@ -5,7 +5,7 @@ import CreatableSelect from 'react-select/creatable';
 import useSelectData from "../hooks/useSelectData";
 
 
-function EditGame({ game, games, onSetGames, players, onSetPlayers, onSetIsEditing }) {
+function EditGame({ game, games, onSetGames, players, onSetPlayers, onSetDisplay }) {
     const [showError, setShowError] = useState(false)
     const [white, setWhite] = useState({ value: game.white_player.name, label: game.white_player.name})
     const [black, setBlack] = useState({ value: game.black_player.name, label: game.black_player.name})
@@ -19,7 +19,7 @@ function EditGame({ game, games, onSetGames, players, onSetPlayers, onSetIsEditi
         setShowError(false)
         setWhite(null)
         setBlack(null)
-        onSetIsEditing(false)
+        onSetDisplay('game')
     }
 
     const formSchema = yup.object().shape({
@@ -28,7 +28,7 @@ function EditGame({ game, games, onSetGames, players, onSetPlayers, onSetIsEditi
         white_player: yup.string()
             .required("Please choose the player with the white pieces"),
         black_player: yup.string()
-            .required("Please choose the player with the white pieces"),
+            .required("Please choose the player with the black pieces"),
     });
 
     const formik = useFormik({
@@ -68,20 +68,26 @@ function EditGame({ game, games, onSetGames, players, onSetPlayers, onSetIsEditi
     const { handleSelect, handleCreate } = useSelectData(formik, setWhite, setBlack, players, onSetPlayers)
 
     return (
-        <div>
+        <div className="add">
             {showError ? <p style={{ color: "red" }}>Failed PGN Validation</p> : null}
             <form onSubmit={formik.handleSubmit}>
-                <input 
-                    type="text"
-                    id="pgn"
-                    name="pgn"
-                    placeholder="Game PGN"
-                    value={formik.values.pgn}
-                    onChange={formik.handleChange}
-                />
+                <div className="select">
+                    <label htmlFor="pgn">Game PGN:</label>
+                    <textarea 
+                        type="text"
+                        id="pgn"
+                        name="pgn"
+                        placeholder="Game PGN"
+                        value={formik.values.pgn}
+                        onChange={formik.handleChange}
+                    />
+                </div>
                 {formik.errors.pgn ? <p style={{ color: "red" }}> {formik.errors.pgn}</p> : null}
                 <div className="select">
+                    <label htmlFor="white_player">White Pieces:</label>
                     <CreatableSelect
+                        id="white_player"
+                        name="white_player"
                         isClearable
                         onChange={(player) => handleSelect('white_player', player)}
                         options={options}
@@ -94,7 +100,10 @@ function EditGame({ game, games, onSetGames, players, onSetPlayers, onSetIsEditi
                     {formik.errors.white_player ? <p style={{ color: "red" }}> {formik.errors.white_player}</p> : null}
                 </div>
                 <div className="select">
+                    <label htmlFor="black_player">Black Pieces:</label>
                     <CreatableSelect
+                    id="black_player"
+                    name="black_player"
                     isClearable
                     onChange={(player) => handleSelect('black_player', player)}
                     options={options}

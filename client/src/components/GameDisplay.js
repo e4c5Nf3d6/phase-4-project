@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import EditGame from "./EditGame";
 
 function GameDisplay({ game, games, onSetGames, players, onSetPlayers, user }) {
-    const [isEditing, setIsEditing] = useState(false)
+    const [display, setDisplay] = useState('game')
 
     let canEdit = false
     if (user) {
@@ -25,25 +25,15 @@ function GameDisplay({ game, games, onSetGames, players, onSetPlayers, user }) {
             <div className="game-title">
                 <h3>{game.white_player.name} - {game.black_player.name}</h3>
                 {canEdit ? 
-                    <button onClick={() => setIsEditing(true)}><img id="edit" src="/edit.png" alt="edit icon" /></button>               
+                    <button onClick={() => setDisplay('editing')}><img id="edit" src="/edit.png" alt="edit icon" /></button>               
                     : null
                 }
                 {canEdit ? 
-                    <button onClick={handleDelete}><img id="delete" src="/delete.png" alt="delete icon" /></button>               
+                    <button onClick={() => setDisplay('delete')}><img id="delete" src="/delete.png" alt="delete icon" /></button>               
                     : null
                 }
             </div>
-            {isEditing? 
-                <EditGame 
-                    game={game} 
-                    games={games}
-                    onSetGames={onSetGames} 
-                    players={players}
-                    onSetPlayers={onSetPlayers}
-                    user={user}  
-                    onSetIsEditing={setIsEditing}               
-                />
-                :
+            {display === 'game' ? 
                 <ct-pgn-viewer 
                     move-list-moveListStyle='twocolumn'
                     board-boardStyle='brown'
@@ -54,10 +44,30 @@ function GameDisplay({ game, games, onSetGames, players, onSetPlayers, user }) {
                     board-disable-sound='true'
                 >
                     {game.pgn}
-                </ct-pgn-viewer>            
-                
+                </ct-pgn-viewer> 
+                : null              
             }
-
+            {display === 'editing' ? 
+                <EditGame 
+                    game={game} 
+                    games={games}
+                    onSetGames={onSetGames} 
+                    players={players}
+                    onSetPlayers={onSetPlayers}
+                    user={user}  
+                    onSetDisplay={setDisplay}               
+                />
+                : null               
+            }
+            {display === 'delete' ?
+                <div className="warning">
+                    <h3>Delete Game?</h3>
+                    <p>This action cannot be undone.</p>
+                    <button className="confirm-button" onClick={handleDelete}>Delete</button>
+                    <button onClick={() => setDisplay('game')}>Close</button>
+                </div>
+                : null
+            }
         </div>
     )
 }
