@@ -2,13 +2,25 @@ import React, { useState, useEffect } from "react";
 import Players from "./Players";
 import Games from "./Games";
 
-function Home({ user, players, onSetPlayers, games }) {
+function Home({ user, players, onSetPlayers, games, onSetGames }) {
 
     return (
         <div>
             <h1>Home Page</h1>
-            <Players user={user} players={players} onSetPlayers={onSetPlayers} />
-            <Games games={games} />
+            <div className="main-content">
+                <Players 
+                    user={user} 
+                    players={players} 
+                    onSetPlayers={onSetPlayers} 
+                />
+                <Games 
+                    user={user} 
+                    games={games} 
+                    onSetGames={onSetGames} 
+                    players={players}
+                    onSetPlayers={onSetPlayers}
+                />
+            </div>
         </div>
     )
 }

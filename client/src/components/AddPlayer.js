@@ -34,8 +34,7 @@ function AddPlayer({ players, onSetPlayers }) {
                     r.json()
                     .then((player) => {
                         onSetPlayers([...players, player])
-                        setIsEditing(!isEditing)
-                        setShowError(false)
+                        handleClose()
                     })
                 } else if (r.status == 422) {
                     setShowError(true)
@@ -48,7 +47,7 @@ function AddPlayer({ players, onSetPlayers }) {
     return (
         <div>
             {isEditing ? 
-                <div className="add-player">
+                <div className="add">
                     <h3>Add a Player</h3>
                     {showError ? <p style={{ color: "red" }}>There is already a player by that name</p> : null}
                     <form onSubmit={formik.handleSubmit}>

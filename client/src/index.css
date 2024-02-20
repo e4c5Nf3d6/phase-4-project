@@ -40,6 +40,12 @@ body {
     float: right;
 }
 
+.main-content {
+    display: grid;
+    grid-template-columns: 30% 70%;
+    align-items: start;       
+}
+
 form {
     display: block;
     text-align: center;
@@ -78,17 +84,30 @@ button {
     margin-bottom: 20px;
 }
 
-.add-player {
+.add {
     background-color: #E2D8D2;
     border: #2D1F17 solid 2px;
     padding: 10px;
     text-align: center;
 }
 
-.add-player input[type=text] {
+.add input[type=text] {
     text-align: center;
 }
 
+.game-display {
+    background-color: white;
+    border: groove #2D1F17 3px;
+    padding: 10px 30px 30px 30px;
+    margin-right: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
 ct-pgn-viewer.ct-pgn-viewer move-list .ct-move-list-container {
-    height:290px;
+    height:225px;
+}
+
+.select {
+    margin: 10px
 }

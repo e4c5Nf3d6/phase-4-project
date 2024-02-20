@@ -10,7 +10,7 @@ function GameDisplay({ game }) {
                 board-boardStyle='brown'
                 board-resizable='true'
                 board-allowdrawing='true'
-                board-size='450px'
+                board-size='400px'
                 board-highlight-move-square-colour='false'
                 board-disable-sound='true'
             >

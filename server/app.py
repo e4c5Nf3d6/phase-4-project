@@ -130,8 +130,11 @@ class Games(Resource):
         request_json = request.get_json()
 
         pgn = request_json.get('pgn')
-        white_player_id = request_json.get('white_player_id')  
-        black_player_id = request_json.get('black_player_id')  
+        white_player_name = request_json.get('white_player')  
+        black_player_name = request_json.get('black_player')  
+
+        white_player = Player.query.filter(Player.name == white_player_name).first()
+        black_player = Player.query.filter(Player.name == black_player_name).first()
 
         user_id = session['user_id']
       
@@ -139,8 +142,8 @@ class Games(Resource):
 
             game = Game(
                 pgn=pgn,
-                white_player_id=white_player_id,
-                black_player_id=black_player_id,
+                white_player_id=white_player.id,
+                black_player_id=black_player.id,
                 user_id=user_id
             )
 

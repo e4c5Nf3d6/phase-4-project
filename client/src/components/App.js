@@ -32,10 +32,10 @@ function App() {
     }, []);
 
     const sortedPlayers = [...players].sort(function (a, b) {
-        if (a.name < b.name) {
+        if (a.name.toLowerCase() < b.name.toLowerCase()) {
           return -1;
         }
-        if (a.name > b.name) {
+        if (a.name.toLowerCase() > b.name.toLowerCase()) {
           return 1;
         }
         return 0;
@@ -68,6 +68,7 @@ function App() {
                             players={sortedPlayers} 
                             onSetPlayers={setPlayers} 
                             games={games}
+                            onSetGames={setGames}
                         />
                     </Route>
                 </Switch>        
