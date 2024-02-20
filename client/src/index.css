@@ -118,7 +118,17 @@ button {
 
 #delete {
     width: 25px;
-    height: 25px
+    height: 25px;
+}
+
+#saved {
+    width: 25px;
+    height: 25px;    
+}
+
+#save {
+    width: 25px;
+    height: 25px;      
 }
 
 .game-display {

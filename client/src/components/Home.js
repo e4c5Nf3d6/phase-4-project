@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Players from "./Players";
 import Games from "./Games";
 
-function Home({ user, players, onSetPlayers, games, onSetGames }) {
+function Home({ user, players, onSetPlayers, games, onSetGames, saves, onSetSaves }) {
 
     return (
         <div>
@@ -19,6 +19,8 @@ function Home({ user, players, onSetPlayers, games, onSetGames }) {
                     onSetGames={onSetGames} 
                     players={players}
                     onSetPlayers={onSetPlayers}
+                    saves={saves}
+                    onSetSaves={onSetSaves}
                 />
             </div>
         </div>

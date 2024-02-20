@@ -10,13 +10,25 @@ function App() {
     const [user, setUser] = useState(null);
     const [players, setPlayers] = useState([]);
     const [games, setGames] = useState([]);
+    const [saves, setSaves] = useState([]);
 
     useEffect(() => {
         fetch("/check_session")
         .then((r) => {
             if (r.ok) {
                 r.json()
-                .then((user) => setUser(user))
+                .then((user) => {
+                    setUser(user)
+                    fetch(`user/${user.id}/saved`)
+                    .then ((r) => {
+                        if (r.ok) {
+                            r.json()
+                            .then((saves) => {
+                                setSaves(saves)
+                            })
+                        }
+                    })
+                })
             }
         })
     }, []);
@@ -69,6 +81,8 @@ function App() {
                             onSetPlayers={setPlayers} 
                             games={games}
                             onSetGames={setGames}
+                            saves={saves}
+                            onSetSaves={setSaves}
                         />
                     </Route>
                 </Switch>        

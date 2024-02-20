@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import EditGame from "./EditGame";
+import Save from "./Save";
 
-function GameDisplay({ game, games, onSetGames, players, onSetPlayers, user }) {
+function GameDisplay({ game, games, onSetGames, players, onSetPlayers, user, saves, onSetSaves }) {
     const [display, setDisplay] = useState('game')
 
     let canEdit = false
     if (user) {
-        if (user.id == game.user_id) {
+        if (user.id === game.user_id) {
             canEdit = true
         }
     }
@@ -32,6 +33,7 @@ function GameDisplay({ game, games, onSetGames, players, onSetPlayers, user }) {
                     <button onClick={() => setDisplay('delete')}><img id="delete" src="/delete.png" alt="delete icon" /></button>               
                     : null
                 }
+                <Save game={game} saves={saves} onSetSaves={onSetSaves} />
             </div>
             {display === 'game' ? 
                 <ct-pgn-viewer 

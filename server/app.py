@@ -315,6 +315,20 @@ class SavesByID(Resource):
 
             return make_response({'error': '403 Forbidden'}, 403)
 
+class SavesByUserID(Resource):
+    
+    def get(self, id):
+
+        user = User.query.filter(User.id == id).first()
+
+        if user:
+
+            saves = [save.to_dict() for save in user.saves]
+
+            return make_response(jsonify(saves), 200)
+        
+        return make_response({'error': '404 Not Found'}, 404)
+
 
 api.add_resource(Signup, '/signup', endpoint='signup')
 api.add_resource(CheckSession, '/check_session', endpoint='check_session')
@@ -325,6 +339,7 @@ api.add_resource(Games, '/games', endpoint='games')
 api.add_resource(GamesByID, '/games/<int:id>', endpoint='games/<int:id>')
 api.add_resource(Saves, '/saves', endpoint='saves')
 api.add_resource(SavesByID, '/saves/<int:id>', endpoint='saves/<int:id>')
+api.add_resource(SavesByUserID, '/user/<int:id>/saved', endpoint='user/<int:id>/saved')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

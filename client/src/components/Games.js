@@ -3,7 +3,7 @@ import React from "react";
 import GameDisplay from "./GameDisplay";
 import AddGame from "./AddGame";
 
-function Games({ user, games, onSetGames, players, onSetPlayers }) {
+function Games({ user, games, onSetGames, players, onSetPlayers, saves, onSetSaves }) {
 
     return (
         <div className="game-display">
@@ -25,6 +25,8 @@ function Games({ user, games, onSetGames, players, onSetPlayers }) {
                         players={players}
                         onSetPlayers={onSetPlayers}
                         user={user} 
+                        saves={saves}
+                        onSetSaves={onSetSaves}
                     />
                 )
             })}

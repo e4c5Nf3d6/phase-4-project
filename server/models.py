@@ -15,9 +15,6 @@ class User(db.Model, SerializerMixin):
         '-games.user',
         '-games.white_player',
         '-games.black_player',
-        '-games.saves',
-        '-saves.user',
-        '-saves.game'
     )
 
     id = db.Column(db.Integer, primary_key=True)
@@ -28,7 +25,7 @@ class User(db.Model, SerializerMixin):
     games = db.relationship('Game', back_populates="user")
     saves = db.relationship('Save', back_populates='user', cascade='all, delete-orphan')
     saved_games = association_proxy('saves', 'game', 
-                                       creator=lambda game_obj: Save(game=game_obj))
+                                    creator=lambda game_obj: Save(game=game_obj))
 
     @hybrid_property
     def password_hash(self):
@@ -73,7 +70,6 @@ class Game(db.Model, SerializerMixin):
     serialize_rules = (
         '-user.games', 
         '-user.players',
-        '-user.saves',
         '-white_player.games_with_white', 
         '-white_player.games_with_black',
         '-white_player.user',
