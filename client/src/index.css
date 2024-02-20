@@ -2,18 +2,20 @@ body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
   text-align: center;
+  color: #2D1F17;
+  background-color: #F5EFEB;
 }
 
 .navbar {
-    background-color: black;
+    background-color: #2D1F17;
     text-align: center;
     padding: 10px;
 }
 
 .logout {
-    background-color: white;
+    background-color: #F5EFEB;
     border: none;
-    color: black;
+    color: #2D1F17;
     padding: 12px;
     margin: 10px;
     text-align: center;
@@ -23,7 +25,7 @@ body {
 }
 
 .greeting {
-    color: white;
+    color: #F5EFEB;
     display: inline;
     float: right;
 }
@@ -41,12 +43,38 @@ input[type=text] {
     box-sizing: border-box;
 }
 
-button[type=submit] {
-    background-color: black;
+button {
+    background-color: #2D1F17;
     border: none;
-    color: white;
+    color: #F5EFEB;
     padding: 12px 50px;
-    margin: 12px;
+    margin: 12px 0px;
     text-align: center;
     font-size: 16px;  
+}
+
+.players {
+    background-color: white;
+    border: groove #2D1F17 3px;
+    padding: 10px 30px;
+    text-align: left;
+    float: left;
+    margin: 20px
+}
+
+.players input[type=text] {
+    width: 250px;
+    margin: 0px;
+    margin-bottom: 20px;
+}
+
+.add-player {
+    background-color: #E2D8D2;
+    border: #2D1F17 solid 2px;
+    padding: 10px;
+    text-align: center;
+}
+
+.add-player input[type=text] {
+    text-align: center;
 }

@@ -29,7 +29,7 @@ function NavBar({ user, onSetUser }) {
                 exact
                 style={linkStyles}
                 activeStyle={{
-                    background: "beige"
+                    background: "#E2D8D2"
                 }}
             >
                 Home
@@ -45,7 +45,7 @@ function NavBar({ user, onSetUser }) {
                         to='/login'
                         style={linkStyles}
                         activeStyle={{
-                            background: "beige"
+                            background: "#E2D8D2"
                         }}
                     >
                         Login
@@ -54,7 +54,7 @@ function NavBar({ user, onSetUser }) {
                         to='/signup'
                         style={linkStyles}
                         activeStyle={{
-                            background: "beige"
+                            background: "#E2D8D2"
                         }}
                     >
                         Sign Up

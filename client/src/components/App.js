@@ -4,6 +4,7 @@ import { Switch, Route } from "react-router-dom";
 import SignUp from "./SignUp";
 import NavBar from "./NavBar";
 import Login from "./Login";
+import Home from "./Home";
 
 function App() {
     const [user, setUser] = useState(null);
@@ -30,7 +31,7 @@ function App() {
                         <Login onLogin={setUser} />
                     </Route>
                     <Route path='/'>
-                        <h1>Home</h1>
+                        <Home user={user} />
                     </Route>
                 </Switch>        
             </>
