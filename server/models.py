@@ -2,6 +2,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.orm import validates
 from sqlalchemy.ext.associationproxy import association_proxy
+import re
 
 from config import db, bcrypt
 
@@ -86,7 +87,8 @@ class Game(db.Model, SerializerMixin):
 
     @validates("pgn")
     def validate_pgn(self, key, pgn):
-        if '1.' not in pgn:
+        regex = '((\s*)\[(.*?)\](\s*))*1\.(.*\n)*'
+        if not re.search(regex, pgn):
             raise ValueError('Failed PGN validation')
         return pgn
 
