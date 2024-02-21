@@ -13,8 +13,8 @@ class User(db.Model, SerializerMixin):
         '-players.games_with_white',
         '-players.games_with_black',
         '-games.user',
-        '-games.white_player',
-        '-games.black_player',
+        '-games.white_player.user',
+        '-games.black_player.user',
     )
 
     id = db.Column(db.Integer, primary_key=True)
@@ -105,8 +105,12 @@ class Save(db.Model, SerializerMixin):
         '-user.players', 
         '-user.saves',
         '-game.user',
-        '-game.white_player',
-        '-game.black_player',
+        '-game.white_player.user',
+        '-game.white_player.games_with_white',
+        '-game.white_player.games_with_black',
+        '-game.black_player.user',
+        '-game.black_player.games_with_white',
+        '-game.black_player.games_with_black',
         '-game.saves'
     )
 

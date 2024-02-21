@@ -18,8 +18,8 @@ function Saved({ user, games, onSetGames, saves, onSetSaves, players, onSetPlaye
             }
         }
     })
-    const userGames = games.filter((game) => game.user_id === user.id)
 
+    
     return (
         <div>
             <h1>Saved Games</h1>
@@ -43,7 +43,7 @@ function Saved({ user, games, onSetGames, saves, onSetSaves, players, onSetPlaye
             </div>
             {visible === 'myGames' ?
                 <div className="games-container">
-                    {userGames.map(function(game) {
+                    {user.games.map(function(game) {
                         return (
                             <GameDisplay 
                                 key={game.id} 

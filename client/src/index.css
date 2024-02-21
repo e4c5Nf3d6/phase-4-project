@@ -79,6 +79,14 @@ button {
     margin: 20px
 }
 
+.clickable {
+    cursor: pointer;
+}
+
+.active-option {
+    text-decoration: underline;
+}
+
 .players input[type=text] {
     width: 250px;
     margin: 0px;

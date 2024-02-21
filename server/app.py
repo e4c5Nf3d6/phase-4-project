@@ -32,7 +32,7 @@ class Signup(Resource):
 
                 session['user_id'] = user.id
 
-                return make_response(user.to_dict(), 201)
+                return make_response(user.to_dict(only=('id', 'username', 'games', 'players', 'saves', 'saved_games')), 201)
         
             except IntegrityError:
 
@@ -50,7 +50,7 @@ class CheckSession(Resource):
         if user_id:
             user = User.query.filter(User.id == user_id).first()
 
-            return make_response(user.to_dict(), 200)
+            return make_response(user.to_dict(only=('id', 'username', 'games', 'players', 'saves', 'saved_games')), 200)
         
         return make_response({'error': '401 Unauthorized'}, 401)
     
@@ -68,7 +68,7 @@ class Login(Resource):
             if user.authenticate(password):
                 session['user_id'] = user.id
 
-                return make_response(user.to_dict(), 200)
+                return make_response(user.to_dict(only=('id', 'username', 'games', 'players', 'saves', 'saved_games')), 200)
         
         return make_response({'error': '401 Unauthorized'}, 401)
 

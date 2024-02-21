@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import AddPlayer from "./AddPlayer";
 
-function Players({ user, players, onSetPlayers }) {
+function Players({ user, players, onSetPlayers, activePlayerID, onSetActivePlayerID }) {
     const [query, setQuery] = useState('')
 
     const filteredPlayers = players.filter(player => player.name.toLowerCase().includes(query.toLowerCase()))
@@ -19,9 +19,17 @@ function Players({ user, players, onSetPlayers }) {
                 onChange={(e) => setQuery(e.target.value)}
             />
             {user ? <AddPlayer players={players} onSetPlayers={onSetPlayers} /> : null}
+            <p 
+                className={activePlayerID === 'all' ? "active-option" : "clickable"}
+                onClick={() => onSetActivePlayerID('all')}
+            ><strong>All Players</strong></p>
             {filteredPlayers.map(function(player) {
                 return (
-                    <p key={player.id}>{player.name}</p>
+                    <p 
+                        className={player.id === activePlayerID ? "active-option" : "clickable"}
+                        key={player.id}
+                        onClick={() => onSetActivePlayerID(player.id)}
+                    >{player.name}</p>
                 )
             })}
         </div>

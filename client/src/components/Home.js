@@ -1,8 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Players from "./Players";
 import Games from "./Games";
 
 function Home({ user, players, onSetPlayers, games, onSetGames, saves, onSetSaves }) {
+    const [activePlayerID, setActivePlayerID] = useState('all')
+
+    const filteredGames = games.filter((game) => {
+        if (activePlayerID === 'all') {
+            return true
+        } else return (game.white_player_id === activePlayerID || game.black_player_id === activePlayerID)
+    })
 
     return (
         <div>
@@ -12,10 +19,12 @@ function Home({ user, players, onSetPlayers, games, onSetGames, saves, onSetSave
                     user={user} 
                     players={players} 
                     onSetPlayers={onSetPlayers} 
+                    activePlayerID={activePlayerID}
+                    onSetActivePlayerID={setActivePlayerID}
                 />
                 <Games 
                     user={user} 
-                    games={games} 
+                    games={filteredGames} 
                     onSetGames={onSetGames} 
                     players={players}
                     onSetPlayers={onSetPlayers}

@@ -67,6 +67,8 @@ function App() {
         })
     }, [])
 
+    const sortedGames = games.toReversed()
+
     return (
         <main>
             <>
@@ -94,7 +96,7 @@ function App() {
                             user={user} 
                             players={sortedPlayers} 
                             onSetPlayers={setPlayers} 
-                            games={games}
+                            games={sortedGames}
                             onSetGames={setGames}
                             saves={saves}
                             onSetSaves={setSaves}
