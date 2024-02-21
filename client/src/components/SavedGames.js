@@ -4,13 +4,18 @@ import GameDisplay from "./GameDisplay";
 function SavedGames({ user, games, onSetGames, saves, onSetSaves, players, onSetPlayers}) {
     const [visible, setVisible] = useState('all')
 
+    console.log(saves)
+
     const savesToShow = saves.filter((save) => {
         if (visible === 'all') {
             return true
         } else {
+            console.log(save)
+            console.log(save.category.includes(visible))
             return save.category.includes(visible)   
         } 
     })
+
     const gamesToShow = savesToShow.map((save) => {
         for (let i = 0; i < games.length; i++) {
             if (games[i].id ===  save.game.id) {
@@ -19,7 +24,6 @@ function SavedGames({ user, games, onSetGames, saves, onSetSaves, players, onSet
         }
     })
 
-    
     return (
         <div>
             <h1>Saved Games</h1>
