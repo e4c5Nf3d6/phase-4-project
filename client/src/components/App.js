@@ -18,36 +18,33 @@ function App() {
         .then((r) => {
             if (r.ok) {
                 r.json()
-                .then((user) => setUser(user))
+                .then((user) => setUser(user));
             }
-        })
+        });
     }, []);
 
     useEffect(() => {
-        console.log('gettingSaves')
         if (user) {
             fetch(`user/${user.id}/saved`)
             .then ((r) => {
                 if (r.ok) {
                     r.json()
-                    .then((saves) => {
-                        setSaves(saves)
-                    })
+                    .then((saves) => setSaves(saves));
                 }
-            })            
+            });            
         } else {
-            setSaves([])
+            setSaves([]);
         }
-    }, [user])
+    }, [user]);
 
     useEffect(() => {
         fetch("/players", { method: 'GET' })
         .then((r) => {
             if (r.ok) {
                 r.json()
-                .then((players) => setPlayers(players))
+                .then((players) => setPlayers(players));
             }
-        })
+        });
     }, []);
 
     const sortedPlayers = [...players].sort(function (a, b) {
@@ -65,12 +62,20 @@ function App() {
         .then((r) => {
             if (r.ok) {
                 r.json()
-                .then((games) => setGames(games))
+                .then((games) => setGames(games));
             }
-        })
-    }, [])
+        });
+    }, []);
 
-    const sortedGames = games.toReversed()
+    const sortedGames = [...games].sort(function (a, b) {
+        if (a.id < b.id) {
+          return 1;
+        }
+        if (a.id > b.id) {
+          return -1;
+        }
+        return 0;
+    });
 
     return (
         <main>

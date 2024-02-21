@@ -26,6 +26,7 @@ class User(db.Model, SerializerMixin):
     players = db.relationship('Player', back_populates="user")
     games = db.relationship('Game', back_populates="user")
     saves = db.relationship('Save', back_populates='user', cascade='all, delete-orphan')
+
     saved_games = association_proxy('saves', 'game', 
                                     creator=lambda game_obj: Save(game=game_obj))
 
@@ -97,6 +98,7 @@ class Game(db.Model, SerializerMixin):
     white_player = db.relationship('Player', foreign_keys=[white_player_id], back_populates='games_with_white')
     black_player = db.relationship('Player', foreign_keys=[black_player_id], back_populates='games_with_black')
     saves = db.relationship('Save', back_populates='game', cascade='all, delete-orphan')
+    
     users = association_proxy('saves', 'user',
                               creator=lambda user_obj: Save(user=user_obj))
 

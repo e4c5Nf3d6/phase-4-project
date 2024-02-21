@@ -14,16 +14,16 @@ const linkStyles = {
 };
 
 function NavBar({ user, onSetUser }) {
-    const history = useHistory()
+    const history = useHistory();
 
     function handleLogout() {
         fetch("/logout", { method: "DELETE"})
         .then((r) => {
             if (r.ok) {
-                history.push('/')
-                onSetUser(null)
+                history.push('/');
+                onSetUser(null);
             }
-        })
+        });
     }
 
     return (
@@ -53,8 +53,7 @@ function NavBar({ user, onSetUser }) {
                     : null
                 }
                 {user ?
-                    null
-                    :
+                    null :
                     <>
                         <NavLink 
                             to='/login'
@@ -62,18 +61,14 @@ function NavBar({ user, onSetUser }) {
                             activeStyle={{
                                 background: "#E2D8D2"
                             }}
-                        >
-                            Login
-                        </NavLink>
+                        >Login</NavLink>
                         <NavLink 
                             to='/signup'
                             style={linkStyles}
                             activeStyle={{
                                 background: "#E2D8D2"
                             }}
-                        >
-                            Sign Up
-                        </NavLink>
+                        >Sign Up</NavLink>
                     </>
                 }
             </div>
@@ -82,11 +77,10 @@ function NavBar({ user, onSetUser }) {
                     <button className="logout" onClick={handleLogout}>Logout</button>
                     <h2 className="greeting">Hello, {user.username}</h2>
                 </div>
-                :
-                null
+                : null
             }
         </div>
-    )
+    );
 }
 
-export default NavBar
+export default NavBar;

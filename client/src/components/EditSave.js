@@ -1,4 +1,5 @@
 import React from "react";
+
 import Save from "./Save";
 
 function EditSave({ save, saves, onSetSaves, display, onSetDisplay, game }) {
@@ -17,7 +18,7 @@ function EditSave({ save, saves, onSetSaves, display, onSetDisplay, game }) {
                 : <p onClick={() => onSetDisplay('editing save')}>{save.comment}</p>
             }
         </>
-    )
+    );
 }
 
-export default EditSave
+export default EditSave;

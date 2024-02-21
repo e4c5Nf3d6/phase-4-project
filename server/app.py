@@ -13,6 +13,7 @@ def index():
 class Signup(Resource):
 
     def post(self):
+
         request_json = request.get_json()
 
         username = request_json.get('username')
@@ -24,9 +25,11 @@ class Signup(Resource):
         )
 
         if password == password_confirmation:
+
             user.password_hash = password
 
             try:
+
                 db.session.add(user)
                 db.session.commit()
 
@@ -45,18 +48,21 @@ class Signup(Resource):
 class CheckSession(Resource):
 
     def get(self):
+
         user_id = session['user_id']
 
         if user_id:
+
             user = User.query.filter(User.id == user_id).first()
 
             return make_response(user.to_dict(only=('id', 'username', 'games', 'players', 'saves', 'saved_games')), 200)
         
         return make_response({'error': '401 Unauthorized'}, 401)
-    
+        
 class Login(Resource):
     
     def post(self):
+
         request_json = request.get_json()
 
         username = request_json.get('username')
@@ -65,6 +71,7 @@ class Login(Resource):
         user = User.query.filter(User.username == username).first()
 
         if user:
+
             if user.authenticate(password):
                 session['user_id'] = user.id
 
@@ -72,11 +79,13 @@ class Login(Resource):
         
         return make_response({'error': '401 Unauthorized'}, 401)
 
+
 class Logout(Resource):
     
     def delete(self):
         
         if session['user_id']:
+
             session['user_id'] = None
 
             return make_response({}, 204)
@@ -92,6 +101,7 @@ class Players(Resource):
         return make_response(jsonify(players), 200)
     
     def post(self):
+
         request_json = request.get_json()
 
         name = request_json.get('name')
@@ -127,6 +137,7 @@ class Games(Resource):
         return make_response(jsonify(games), 200)
     
     def post(self):
+
         request_json = request.get_json()
 
         pgn = request_json.get('pgn')
@@ -141,6 +152,7 @@ class Games(Resource):
         if user_id:
 
             try:
+
                 game = Game(
                     pgn=pgn,
                     white_player_id=white_player.id,
@@ -285,6 +297,7 @@ class SavesByID(Resource):
             try: 
                 
                 for attr in data:
+                    
                     setattr(save, attr, data[attr])
 
                 db.session.add(save)

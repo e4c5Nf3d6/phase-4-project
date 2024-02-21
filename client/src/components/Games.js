@@ -31,7 +31,7 @@ function Games({ user, games, onSetGames, players, onSetPlayers, saves, onSetSav
                 )
             })}
         </div>
-    )
+    );
 }
 
-export default Games
+export default Games;

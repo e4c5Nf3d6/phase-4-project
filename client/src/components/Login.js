@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useHistory } from "react-router-dom";
+
 import useDocumentTitle from "../hooks/useDocumentTitle";
 
 function Login({ onLogin }) {
-    const history = useHistory()
-    const [showError, setShowError] = useState(false)
+    const history = useHistory();
+    const [showError, setShowError] = useState(false);
 
-    useDocumentTitle('Login')
+    useDocumentTitle('Login');
 
     const formSchema = yup.object().shape({
         username: yup.string()
@@ -31,18 +32,18 @@ function Login({ onLogin }) {
                 },
                 body: JSON.stringify(values, null, 2)
             }).then((r) => {
-                if (r.status == 200) {
+                if (r.status === 200) {
                     r.json()
                     .then((user) => {
-                        onLogin(user)
-                        history.push('/')
+                        onLogin(user);
+                        history.push('/');
                     })
-                } else if (r.status == 401) {
-                    setShowError(true)
+                } else if (r.status === 401) {
+                    setShowError(true);
                 }
-            })
+            });
         }
-    })
+    });
     
     return (
         <div>
@@ -58,7 +59,7 @@ function Login({ onLogin }) {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                 />
-                {formik.touched.username && formik.errors.username ? <p style={{ color: "red" }}> {formik.errors.username}</p> : null}
+                {formik.touched.username && formik.errors.username ? <p style={{ color: "red" }}>{formik.errors.username}</p> : null}
                 <label htmlFor="password">Password</label>
                 <input 
                     type="password"
@@ -68,11 +69,11 @@ function Login({ onLogin }) {
                     onBlur={formik.handleBlur}
                     onChange={formik.handleChange}
                 />
-                {formik.touched.password && formik.errors.password ? <p style={{ color: "red" }}> {formik.errors.password}</p> : null}
+                {formik.touched.password && formik.errors.password ? <p style={{ color: "red" }}>{formik.errors.password}</p> : null}
                 <button type="submit">Login</button>
             </form>         
         </div>
-    )
+    );
 }
 
-export default Login
+export default Login;

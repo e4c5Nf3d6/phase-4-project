@@ -3,13 +3,13 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 
 function AddPlayer({ players, onSetPlayers }) {
-    const [isEditing, setIsEditing] = useState(false)
-    const [showError, setShowError] = useState(false)
+    const [isEditing, setIsEditing] = useState(false);
+    const [showError, setShowError] = useState(false);
 
     function handleClose() {
-        setShowError(false)
-        formik.resetForm()
-        setIsEditing(false)
+        setShowError(false);
+        formik.resetForm();
+        setIsEditing(false);
     }
 
     const formSchema = yup.object().shape({
@@ -30,19 +30,19 @@ function AddPlayer({ players, onSetPlayers }) {
                 },
                 body: JSON.stringify(values, null, 2)
             }).then((r) => {
-                if (r.status == 201) {
+                if (r.status === 201) {
                     r.json()
                     .then((player) => {
-                        onSetPlayers([...players, player])
-                        handleClose()
-                    })
-                } else if (r.status == 422) {
-                    setShowError(true)
-                    resetForm()
+                        onSetPlayers([...players, player]);
+                        handleClose();
+                    });
+                } else if (r.status === 422) {
+                    setShowError(true);
+                    resetForm();
                 }
-            })
+            });
         }
-    })
+    });
 
     return (
         <div>
@@ -59,7 +59,7 @@ function AddPlayer({ players, onSetPlayers }) {
                             value={formik.values.name}
                             onChange={formik.handleChange}
                         />
-                        {formik.errors.name ? <p style={{ color: "red" }}> {formik.errors.name}</p> : null}
+                        {formik.errors.name ? <p style={{ color: "red" }}>{formik.errors.name}</p> : null}
                         <button type="submit">Submit</button>
                     </form>
                     <button type="reset" onClick={handleClose}>Close</button>
@@ -68,7 +68,7 @@ function AddPlayer({ players, onSetPlayers }) {
                 <button onClick={() => setIsEditing(!isEditing)}>Add Player</button>
             }
         </div>
-    )
+    );
 }
 
-export default AddPlayer
+export default AddPlayer;

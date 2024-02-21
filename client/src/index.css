@@ -18,6 +18,16 @@ body {
     display: inline-block;
 }
 
+.profile {
+    float: right;
+}
+
+.greeting {
+    color: #F5EFEB;
+    display: inline;
+    float: right;
+}
+
 .logout {
     background-color: #F5EFEB;
     border: none;
@@ -29,22 +39,6 @@ body {
     float: right;
     font-size: 16px;
     box-shadow: none;
-}
-
-.greeting {
-    color: #F5EFEB;
-    display: inline;
-    float: right;
-}
-
-.profile {
-    float: right;
-}
-
-.main-content {
-    display: grid;
-    grid-template-columns: 30% 70%;
-    align-items: start;       
 }
 
 form {
@@ -80,21 +74,19 @@ button {
     box-shadow: 2px 2px 4px gray;
 }
 
+.main-content {
+    display: grid;
+    grid-template-columns: 30% 70%;
+    align-items: start;       
+}
+
 .players {
     background-color: white;
     border: groove #2D1F17 3px;
     padding: 10px 30px;
     text-align: left;
     float: left;
-    margin: 20px
-}
-
-.clickable {
-    cursor: pointer;
-}
-
-.active-option {
-    text-decoration: underline;
+    margin: 20px;
 }
 
 .players input[type=text] {
@@ -114,6 +106,14 @@ button {
     text-align: center;
 }
 
+.clickable {
+    cursor: pointer;
+}
+
+.active-option {
+    text-decoration: underline;
+}
+
 .game-title {
     display: flex;
     justify-content: center;
@@ -128,6 +128,15 @@ button {
     height: 40px;
     padding: 0px;
     margin: 0px 0px 0px 12px;
+}
+
+.game-display {
+    background-color: white;
+    border: groove #2D1F17 3px;
+    padding: 10px 30px 30px 30px;
+    margin-right: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 #edit {
@@ -150,13 +159,11 @@ button {
     height: 25px;      
 }
 
-.game-display {
-    background-color: white;
-    border: groove #2D1F17 3px;
-    padding: 10px 30px 30px 30px;
-    margin-right: 20px;
-    margin-top: 20px;
-    margin-bottom: 20px;
+.comment p {
+    color: #5d9ad4 ;
+    background-color: #1c1c1c;
+    padding: 10px;
+    box-shadow: 2px 2px 4px gray;
 }
 
 ct-pgn-viewer.ct-pgn-viewer move-list .ct-move-list-container {
@@ -191,7 +198,7 @@ textarea {
     resize: none;
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
-  }
+}
 
 .warning {
     border: 2px solid #2D1F17;
@@ -217,19 +224,12 @@ textarea {
     width: 200px;
 }
 
-.games-container {
-    display: inline-block;
-    align-items: center;
-    max-width: 800px;
-}
-
 .active {
     background-color: #50392C;
 }
 
-.comment p {
-    color: #5d9ad4 ;
-    background-color: #1c1c1c;
-    padding: 10px;
-    box-shadow: 2px 2px 4px gray;
+.games-container {
+    display: inline-block;
+    align-items: center;
+    max-width: 800px;
 }

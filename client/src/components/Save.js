@@ -6,25 +6,25 @@ import Select from "react-select";
 const options = [
     {value: "study", label: "To Study"},
     {value: "favorites", label: "Favorites"},
-]
+];
 
 function Save({ save, saves, onSetSaves, display, onSetDisplay, game }) {
-    const [category, setCategory] = useState({value: 'all', label: 'Choose a Category'})
+    const [category, setCategory] = useState({value: 'all', label: 'Choose a Category'});
     
     useEffect(() => {
         if (display === 'editing save') {
             switch(save.category) {
                 case 'study':
-                    setCategory({value: "study", label: "To Study"})
+                    setCategory({value: "study", label: "To Study"});
                     break;
                 case 'favorites':
-                    setCategory({value: "favorites", label: "Favorites"})
+                    setCategory({value: "favorites", label: "Favorites"});
                     break;
                 default:
                     break;
             }
         }
-    }, [display])
+    }, [display]);
 
     let initialValues = {
         game_id: game.id,
@@ -42,13 +42,13 @@ function Save({ save, saves, onSetSaves, display, onSetDisplay, game }) {
 
     function handleSelect(category) {
         formik.setFieldValue('category', category["value"]);
-        setCategory(category)
+        setCategory(category);
     }
 
     function handleClose() {
-        setCategory({value: 'all'})
-        onSetDisplay('game')
-        formik.resetForm()
+        setCategory({value: 'all'});
+        onSetDisplay('game');
+        formik.resetForm();
     }
 
     const formSchema = yup.object().shape({
@@ -73,33 +73,34 @@ function Save({ save, saves, onSetSaves, display, onSetDisplay, game }) {
                         .then((data) => {
                             onSetSaves(saves.map(save => {
                                 if (save.id === data.id) {
-                                    return data
-                                } else return save
-                            }))
-                            handleClose()
-                        })
+                                    return data;
+                                } else return save;
+                            }));
+                            handleClose();
+                        });
                     }
-                })
+                });
             } else {
                 fetch("/saves", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(values, null, 2)
-            }).then((r) => {
-                if (r.status === 201) {
-                    r.json()
-                    .then((save) => {
-                        onSetSaves([...saves, save])
-                        resetForm()
-                        setCategory({value: 'all', label: 'Choose a Category'})
-                        onSetDisplay('game')
-                    })
-                }
-            })}
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(values, null, 2)
+                }).then((r) => {
+                    if (r.status === 201) {
+                        r.json()
+                        .then((save) => {
+                            onSetSaves([...saves, save]);
+                            resetForm();
+                            setCategory({value: 'all', label: 'Choose a Category'});
+                            onSetDisplay('game');
+                        });
+                    }
+                });
+            }
         }
-    })
+    });
 
     return (
         <div className="add">
@@ -125,12 +126,11 @@ function Save({ save, saves, onSetSaves, display, onSetDisplay, game }) {
                         onChange={formik.handleChange}   
                     />                
                 </div>
-
                 <button className="submit-button" type="submit">Save</button>
                 <button onClick={handleClose}>Close</button>                     
             </form>
         </div>
-    )
+    );
 }
 
-export default Save
+export default Save;

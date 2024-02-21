@@ -6,4 +6,4 @@ function useDocumentTitle(title) {
     }, [title]);
 }
 
-export default useDocumentTitle
+export default useDocumentTitle;

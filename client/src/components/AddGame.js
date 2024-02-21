@@ -2,30 +2,30 @@ import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import CreatableSelect from 'react-select/creatable';
+
 import useSelectData from "../hooks/useSelectData";
 
-
 function AddGame({ games, onSetGames, players, onSetPlayers }) {
-    const [isEditing, setIsEditing] = useState(false)
-    const [showError, setShowError] = useState(false)
-    const [white, setWhite] = useState(null)
-    const [black, setBlack] = useState(null)
+    const [isEditing, setIsEditing] = useState(false);
+    const [showError, setShowError] = useState(false);
+    const [white, setWhite] = useState(null);
+    const [black, setBlack] = useState(null);
 
     const options = [
-        ...players.map((player) => ({ value: player.name, label: player.name}))
+        ...players.map((player) => ({ value: player.name, label: player.name }))
     ];
 
     function handleClose() {
-        formik.resetForm()
-        setShowError(false)
-        setWhite(null)
-        setBlack(null)
-        setIsEditing(false)
+        formik.resetForm();
+        setShowError(false);
+        setWhite(null);
+        setBlack(null);
+        setIsEditing(false);
     }
 
     const formSchema = yup.object().shape({
         pgn: yup.string()
-            .required("Please enter the PGN for the game"),
+            .required("Please enter the game PGN"),
         white_player: yup.string()
             .required("Please choose the player with the white pieces"),
         black_player: yup.string()
@@ -47,24 +47,25 @@ function AddGame({ games, onSetGames, players, onSetPlayers }) {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify(values, null, 2)
-            }).then((r) => {
-                if (r.status == 201) {
+            })
+            .then((r) => {
+                if (r.status === 201) {
                     r.json()
                     .then((game) => {
-                        onSetGames([...games, game])
-                        handleClose()
-                    })
-                } else if (r.status == 422) {
-                    setShowError(true)
-                    resetForm()
-                    formik.setFieldValue('white_player', white['value'])
-                    formik.setFieldValue('black_player', black['value'])
+                        onSetGames([...games, game]);
+                        handleClose();
+                    });
+                } else if (r.status === 422) {
+                    setShowError(true);
+                    resetForm();
+                    formik.setFieldValue('white_player', white['value']);
+                    formik.setFieldValue('black_player', black['value']);
                 }
-            })
+            });
         }
-    })
+    });
 
-    const { handleSelect, handleCreate } = useSelectData(formik, setWhite, setBlack, players, onSetPlayers)
+    const { handleSelect, handleCreate } = useSelectData(formik, setWhite, setBlack, players, onSetPlayers);
 
     return (
         <div>
@@ -81,7 +82,7 @@ function AddGame({ games, onSetGames, players, onSetPlayers }) {
                             value={formik.values.pgn}
                             onChange={formik.handleChange}
                         />
-                        {formik.errors.pgn ? <p style={{ color: "red" }}> {formik.errors.pgn}</p> : null}
+                        {formik.errors.pgn ? <p style={{ color: "red" }}>{formik.errors.pgn}</p> : null}
                         <div className="select">
                             <CreatableSelect
                                 isClearable
@@ -93,7 +94,7 @@ function AddGame({ games, onSetGames, players, onSetPlayers }) {
                                 menuPortalTarget={document.body} 
                                 styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
                             />
-                            {formik.errors.white_player ? <p style={{ color: "red" }}> {formik.errors.white_player}</p> : null}
+                            {formik.errors.white_player ? <p style={{ color: "red" }}>{formik.errors.white_player}</p> : null}
                         </div>
                         <div className="select">
                             <CreatableSelect
@@ -106,7 +107,7 @@ function AddGame({ games, onSetGames, players, onSetPlayers }) {
                                 menuPortalTarget={document.body} 
                                 styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
                             />
-                            {formik.errors.black_player ? <p style={{ color: "red" }}> {formik.errors.black_player}</p> : null}
+                            {formik.errors.black_player ? <p style={{ color: "red" }}>{formik.errors.black_player}</p> : null}
                         </div>
                         <button className="submit-button" type="submit">Submit</button>
                         <button type="reset" onClick={handleClose}>Close</button>
@@ -116,7 +117,7 @@ function AddGame({ games, onSetGames, players, onSetPlayers }) {
                 <button onClick={() => setIsEditing(!isEditing)}>Add Game</button>
             }
         </div>
-    )
+    );
 }
 
-export default AddGame
+export default AddGame;

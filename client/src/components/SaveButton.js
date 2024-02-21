@@ -6,9 +6,9 @@ function Save({ game, saves, onSetSaves, onSetDisplay, save }) {
         fetch(`/saves/${save.id}`, { method: 'DELETE' })
         .then((r) => {
             if (r.status === 204) {
-                onSetSaves(saves.filter(s => s.id !== save.id))
+                onSetSaves(saves.filter(s => s.id !== save.id));
             }
-        }) 
+        });
     }
 
     return (
@@ -19,7 +19,7 @@ function Save({ game, saves, onSetSaves, onSetDisplay, save }) {
                 <button onClick={() => onSetDisplay('save')}><img id="save" src="/save.png" alt="save icon" /></button>
             }
         </>
-    )
+    );
 }
 
-export default Save
+export default Save;

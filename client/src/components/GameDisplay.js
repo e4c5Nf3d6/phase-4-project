@@ -1,24 +1,24 @@
 import React, { useState } from "react";
+
 import EditGame from "./EditGame";
 import SaveButton from "./SaveButton";
 import Save from "./Save";
-import EditSave from "./EditSave"
+import EditSave from "./EditSave";
 
 function GameDisplay({ game, games, onSetGames, players, onSetPlayers, user, saves, onSetSaves }) {
-    const [display, setDisplay] = useState('game')
+    const [display, setDisplay] = useState('game');
 
-    let save = null
-
+    let save = null;
     for (let i = 0; i < saves.length; i++) {
         if (saves[i].game.id === game.id) {
-            save = saves[i]
+            save = saves[i];
         }
     }
 
-    let canEdit = false
+    let canEdit = false;
     if (user) {
         if (user.id === game.user_id) {
-            canEdit = true
+            canEdit = true;
         }
     }
 
@@ -26,9 +26,9 @@ function GameDisplay({ game, games, onSetGames, players, onSetPlayers, user, sav
         fetch(`/games/${game.id}`, { method: 'DELETE' })
         .then((r) => {
             if (r.status === 204) {
-                onSetGames(games.filter(g => g.id !== game.id))
+                onSetGames(games.filter(g => g.id !== game.id));
             }
-        })
+        });
     }
 
     return (
@@ -118,7 +118,7 @@ function GameDisplay({ game, games, onSetGames, players, onSetPlayers, user, sav
                 : null
             }
         </div>
-    )
+    );
 }
 
-export default GameDisplay
+export default GameDisplay;

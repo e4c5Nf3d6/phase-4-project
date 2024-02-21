@@ -3,9 +3,9 @@ import React, { useState } from "react";
 import AddPlayer from "./AddPlayer";
 
 function Players({ user, players, onSetPlayers, activePlayerID, onSetActivePlayerID }) {
-    const [query, setQuery] = useState('')
+    const [query, setQuery] = useState('');
 
-    const filteredPlayers = players.filter(player => player.name.toLowerCase().includes(query.toLowerCase()))
+    const filteredPlayers = players.filter(player => player.name.toLowerCase().includes(query.toLowerCase()));
 
     return (
         <div className="players">
@@ -30,10 +30,10 @@ function Players({ user, players, onSetPlayers, activePlayerID, onSetActivePlaye
                         key={player.id}
                         onClick={() => onSetActivePlayerID(player.id)}
                     >{player.name}</p>
-                )
+                );
             })}
         </div>
-    )
+    );
 }
 
-export default Players
+export default Players;
