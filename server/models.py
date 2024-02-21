@@ -89,7 +89,17 @@ class Game(db.Model, SerializerMixin):
 
     @validates("pgn")
     def validate_pgn(self, key, pgn):
-        regex = '^((\s*)\[(.*?)\](\s*))*1\.(.*\n)*'
+        # regex = '^((\s*)\[(.*?)\](\s*))*1\.(.*\n)*'
+        regex = '^(\s*(?:\[\s*(\w+)\s*"([^"]*)"\s*\]\s*)*' \
+                '+(?:(\d+)(\.|\.{3})\s*((?:[PNBRQK]?[a-h]?[1-8]?x?[a-h][1-8]' \
+                '(?:\=[PNBRQK])?|O(-?O){1,2})[\+#]?(\s*[\!\?]+)?)' \
+                '(?:\s*((?:[PNBRQK]?[a-h]?[1-8]?x?[a-h][1-8]' \
+                '(?:\=[PNBRQK])?|O(-?O){1,2})[\+#]?(\s*[\!\?]+)?))' \
+                '?\s*(?:\(\s*((?:(\d+)(\.|\.{3})\s*((?:[PNBRQK]?[a-h]?[1-8]?x?[a-h][1-8]' \
+                '(?:\=[PNBRQK])?|O(-?O){1,2})[\+#]?(\s*[\!\?]+)?)(?:\s*((?:[PNBRQK]' \
+                '?[a-h]?[1-8]?x?[a-h][1-8](?:\=[PNBRQK])?|O(-?O){1,2})[\+#]?(\s*[\!\?]+)?))' \
+                '?\s*(?:\((.*)\)\s*)?(?:\{([^\}]*?)\}\s*)?)*)\s*\)\s*)*' \
+                '(?:\{([^\}]*?)\}\s*)?)*(1\-?0|0\-?1|1\/2\-?1\/2|\*)?\s*)'
         if not re.search(regex, pgn, re.NOFLAG):
             raise ValueError('Failed PGN validation')
         return pgn
@@ -98,7 +108,7 @@ class Game(db.Model, SerializerMixin):
     white_player = db.relationship('Player', foreign_keys=[white_player_id], back_populates='games_with_white')
     black_player = db.relationship('Player', foreign_keys=[black_player_id], back_populates='games_with_black')
     saves = db.relationship('Save', back_populates='game', cascade='all, delete-orphan')
-    
+
     users = association_proxy('saves', 'user',
                               creator=lambda user_obj: Save(user=user_obj))
 
