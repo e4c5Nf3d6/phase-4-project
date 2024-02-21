@@ -61,7 +61,7 @@ function Login({ onLogin }) {
                 {formik.touched.username && formik.errors.username ? <p style={{ color: "red" }}> {formik.errors.username}</p> : null}
                 <label htmlFor="password">Password</label>
                 <input 
-                    type="text"
+                    type="password"
                     id="password"
                     name="password"
                     value={formik.values.password}

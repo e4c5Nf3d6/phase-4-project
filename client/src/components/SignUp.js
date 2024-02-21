@@ -64,7 +64,7 @@ function SignUp({ onLogin }) {
                 {formik.touched.username && formik.errors.username ? <p style={{ color: "red" }}> {formik.errors.username}</p> : null}
                 <label htmlFor="password">Password</label>
                 <input 
-                    type="text"
+                    type="password"
                     id="password"
                     name="password"
                     value={formik.values.password}
@@ -74,7 +74,7 @@ function SignUp({ onLogin }) {
                 {formik.touched.password && formik.errors.password ? <p style={{ color: "red" }}> {formik.errors.password}</p> : null}
                 <label htmlFor="password_confirmation">Password Confirmation</label>
                 <input 
-                    type="text"
+                    type="password"
                     id="password_confirmation"
                     name="password_confirmation"
                     value={formik.values.password_confirmation}
