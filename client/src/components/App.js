@@ -37,6 +37,17 @@ function App() {
         }
     }, [user]);
 
+    const sortedSaves = [...saves].sort(function (a, b) {
+        if (a.id < b.id) {
+          return 1;
+        }
+        if (a.id > b.id) {
+          return -1;
+        }
+        return 0;
+    });
+
+
     useEffect(() => {
         fetch("/players", { method: 'GET' })
         .then((r) => {
@@ -91,9 +102,9 @@ function App() {
                     <Route path='/saved'>
                         <SavedGames 
                             user={user}
-                            games={games}
+                            games={sortedGames}
                             onSetGames={setGames}
-                            saves={saves}
+                            saves={sortedSaves}
                             onSetSaves={setSaves}
                             players={players}
                             onSetPlayers={setPlayers}
@@ -106,7 +117,7 @@ function App() {
                             onSetPlayers={setPlayers} 
                             games={sortedGames}
                             onSetGames={setGames}
-                            saves={saves}
+                            saves={sortedSaves}
                             onSetSaves={setSaves}
                         />
                     </Route>
