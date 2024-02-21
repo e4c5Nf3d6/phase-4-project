@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import GameDisplay from "./GameDisplay";
 
-function Saved({ user, games, onSetGames, saves, onSetSaves, players, onSetPlayers}) {
+function SavedGames({ user, games, onSetGames, saves, onSetSaves, players, onSetPlayers}) {
     const [visible, setVisible] = useState('all')
 
     const savesToShow = saves.filter((save) => {
@@ -83,4 +83,4 @@ function Saved({ user, games, onSetGames, saves, onSetSaves, players, onSetPlaye
     )
 }
 
-export default Saved
+export default SavedGames

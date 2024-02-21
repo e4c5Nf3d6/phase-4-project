@@ -5,7 +5,7 @@ import SignUp from "./SignUp";
 import NavBar from "./NavBar";
 import Login from "./Login";
 import Home from "./Home";
-import Saved from "./Saved";
+import SavedGames from "./SavedGames";
 
 function App() {
     const [user, setUser] = useState(null);
@@ -81,7 +81,7 @@ function App() {
                         <Login onLogin={setUser} />
                     </Route>
                     <Route path='/saved'>
-                        <Saved 
+                        <SavedGames 
                             user={user}
                             games={games}
                             onSetGames={setGames}

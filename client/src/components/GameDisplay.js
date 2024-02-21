@@ -1,16 +1,12 @@
 import React, { useState } from "react";
 import EditGame from "./EditGame";
+import SaveButton from "./SaveButton";
 import Save from "./Save";
-import Select from "react-select";
-
-const options = [
-    {value: "study", label: "To Study"},
-    {value: "favorites", label: "Favorites"},
-]
 
 function GameDisplay({ game, games, onSetGames, players, onSetPlayers, user, saves, onSetSaves }) {
     const [display, setDisplay] = useState('game')
     const [category, setCategory] = useState({value: 'all'})
+
 
     let canEdit = false
     if (user) {
@@ -24,26 +20,6 @@ function GameDisplay({ game, games, onSetGames, players, onSetPlayers, user, sav
         .then((r) => {
             if (r.status == 204) {
                 onSetGames(games.filter(g => g.id !== game.id))
-            }
-        })
-    }
-    
-    function handleSave(e) {
-        e.preventDefault()
-        fetch('/saves', {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({category: category.value, game_id: game.id})
-        })
-        .then((r) => {
-            if (r.status === 201) {
-                r.json()
-                .then((save) => {
-                    onSetSaves([...saves, save])
-                    setDisplay('game')
-                })
             }
         })
     }
@@ -61,7 +37,7 @@ function GameDisplay({ game, games, onSetGames, players, onSetPlayers, user, sav
                     : null
                 }
                 {user ?
-                    <Save 
+                    <SaveButton 
                         game={game} 
                         saves={saves} 
                         onSetSaves={onSetSaves} 
@@ -109,19 +85,15 @@ function GameDisplay({ game, games, onSetGames, players, onSetPlayers, user, sav
                 : null
             }
             {display === 'save' ?
-                <div className="add">
-                    <form onSubmit={handleSave}>
-                        <Select
-                            options={options}
-                            value={category}
-                            placeholder='Choose a category'
-                            onChange={(selected) => setCategory(selected)}
-                        />   
-                        <button className="submit-button" type="submit">Save</button>
-                        <button onClick={() => setDisplay('game')}>Close</button>                     
-                    </form>
 
-                </div>
+                <Save
+                    saves={saves}
+                    onSetSaves={onSetSaves}
+                    onSetDisplay={setDisplay}
+                    game={game}
+                    category={category}
+                    onSetCategory={setCategory}
+                />
                 : null
             }
         </div>
