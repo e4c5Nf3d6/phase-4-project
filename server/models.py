@@ -88,8 +88,8 @@ class Game(db.Model, SerializerMixin):
 
     @validates("pgn")
     def validate_pgn(self, key, pgn):
-        regex = '((\s*)\[(.*?)\](\s*))*1\.(.*\n)*'
-        if not re.search(regex, pgn):
+        regex = '^((\s*)\[(.*?)\](\s*))*1\.(.*\n)*'
+        if not re.search(regex, pgn, re.NOFLAG):
             raise ValueError('Failed PGN validation')
         return pgn
 
@@ -121,6 +121,7 @@ class Save(db.Model, SerializerMixin):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     game_id = db.Column(db.Integer, db.ForeignKey('games.id'))
     category = db.Column(db.String)
+    comment = db.Column(db.String)
 
     user = db.relationship('User', back_populates='saves')
     game = db.relationship('Game', back_populates='saves')

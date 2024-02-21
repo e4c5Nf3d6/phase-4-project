@@ -24,6 +24,7 @@ function App() {
     }, []);
 
     useEffect(() => {
+        console.log('gettingSaves')
         if (user) {
             fetch(`user/${user.id}/saved`)
             .then ((r) => {
@@ -34,6 +35,8 @@ function App() {
                     })
                 }
             })            
+        } else {
+            setSaves([])
         }
     }, [user])
 

@@ -256,21 +256,24 @@ if __name__ == '__main__':
         save1 = Save(
             user_id=1,
             game_id=1,
-            category="study"
+            category="study",
+            comment='go through later'
         )
         saves.append(save1)
 
         save2 = Save(
             user_id=1,
             game_id=2,
-            category="favorite"
+            category="favorite",
+            comment=''
         )
         saves.append(save2)
 
         save3 = Save(
             user_id=1,
             game_id=3,
-            category="later"
+            category="favorite",
+            comment='love this one'
         )
         saves.append(save3)
 

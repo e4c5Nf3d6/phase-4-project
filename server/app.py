@@ -236,6 +236,7 @@ class Saves(Resource):
 
         category = request_json.get('category')
         game_id = request_json.get('game_id')
+        comment=request_json.get('comment')
 
         user_id = session['user_id']
 
@@ -246,7 +247,8 @@ class Saves(Resource):
                 save = Save(
                     user_id=user_id,
                     game_id=game_id,
-                    category=category
+                    category=category,
+                    comment=comment
                 )
 
                 db.session.add(save)

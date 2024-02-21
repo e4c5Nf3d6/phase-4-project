@@ -2,11 +2,18 @@ import React, { useState } from "react";
 import EditGame from "./EditGame";
 import SaveButton from "./SaveButton";
 import Save from "./Save";
+import EditSave from "./EditSave"
 
 function GameDisplay({ game, games, onSetGames, players, onSetPlayers, user, saves, onSetSaves }) {
     const [display, setDisplay] = useState('game')
-    const [category, setCategory] = useState({value: 'all'})
 
+    let save = null
+
+    for (let i = 0; i < saves.length; i++) {
+        if (saves[i].game.id === game.id) {
+            save = saves[i]
+        }
+    }
 
     let canEdit = false
     if (user) {
@@ -18,7 +25,7 @@ function GameDisplay({ game, games, onSetGames, players, onSetPlayers, user, sav
     function handleDelete() {
         fetch(`/games/${game.id}`, { method: 'DELETE' })
         .then((r) => {
-            if (r.status == 204) {
+            if (r.status === 204) {
                 onSetGames(games.filter(g => g.id !== game.id))
             }
         })
@@ -42,10 +49,26 @@ function GameDisplay({ game, games, onSetGames, players, onSetPlayers, user, sav
                         saves={saves} 
                         onSetSaves={onSetSaves} 
                         onSetDisplay={setDisplay}
+                        save={save}
                     />
                     : null
                 }
             </div>
+            {save ? 
+                <div className="comment clickable">
+                    {save.comment ? 
+                        <EditSave
+                            save={save}
+                            game={game} 
+                            saves={saves} 
+                            onSetSaves={onSetSaves} 
+                            display={display}
+                            onSetDisplay={setDisplay}
+                        />
+                    : null}
+                </div>    
+                : null
+            }
             {display === 'game' ? 
                 <ct-pgn-viewer 
                     move-list-moveListStyle='twocolumn'
@@ -79,20 +102,18 @@ function GameDisplay({ game, games, onSetGames, players, onSetPlayers, user, sav
                     <button className="confirm-button" onClick={handleDelete}>Delete</button>
                     <button onClick={() => {
                         setDisplay('game')
-                        setCategory({value: 'all'})
                         }}>Close</button>
                 </div>
                 : null
             }
             {display === 'save' ?
-
                 <Save
+                    save={null}
                     saves={saves}
                     onSetSaves={onSetSaves}
+                    display={display}
                     onSetDisplay={setDisplay}
                     game={game}
-                    category={category}
-                    onSetCategory={setCategory}
                 />
                 : null
             }

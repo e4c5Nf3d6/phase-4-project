@@ -1,13 +1,6 @@
 import React from "react";
 
-function Save({ game, saves, onSetSaves, onSetDisplay }) {
-    let save = null
-
-    for (let i = 0; i < saves.length; i++) {
-        if (saves[i].game.id === game.id) {
-            save = saves[i]
-        }
-    }
+function Save({ game, saves, onSetSaves, onSetDisplay, save }) {
 
     function handleRemove() {
         fetch(`/saves/${save.id}`, { method: 'DELETE' })

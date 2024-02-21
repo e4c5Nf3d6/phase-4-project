@@ -57,6 +57,8 @@ function AddGame({ games, onSetGames, players, onSetPlayers }) {
                 } else if (r.status == 422) {
                     setShowError(true)
                     resetForm()
+                    formik.setFieldValue('white_player', white['value'])
+                    formik.setFieldValue('black_player', black['value'])
                 }
             })
         }
