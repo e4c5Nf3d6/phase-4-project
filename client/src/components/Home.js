@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Players from "./Players";
 import Games from "./Games";
+import useDocumentTitle from "../hooks/useDocumentTitle";
 
 function Home({ user, players, onSetPlayers, games, onSetGames, saves, onSetSaves }) {
     const [activePlayerID, setActivePlayerID] = useState('all')
@@ -11,9 +12,11 @@ function Home({ user, players, onSetPlayers, games, onSetGames, saves, onSetSave
         } else return (game.white_player_id === activePlayerID || game.black_player_id === activePlayerID)
     })
 
+    useDocumentTitle('Home')
+
     return (
         <div>
-            <h1>Home Page</h1>
+            <h1>Home</h1>
             <div className="main-content">
                 <Players 
                     user={user} 

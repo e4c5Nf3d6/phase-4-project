@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useHistory } from "react-router-dom";
+import useDocumentTitle from "../hooks/useDocumentTitle";
 
 function SignUp({ onLogin }) {
     const history = useHistory()
     const [showError, setShowError] = useState(false)
+
+    useDocumentTitle('Sign Up')
 
     const formSchema = yup.object().shape({
         username: yup.string()

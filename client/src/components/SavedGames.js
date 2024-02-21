@@ -1,10 +1,11 @@
 import React, {useState} from "react";
 import GameDisplay from "./GameDisplay";
+import useDocumentTitle from "../hooks/useDocumentTitle";
 
 function SavedGames({ user, games, onSetGames, saves, onSetSaves, players, onSetPlayers}) {
-    const [visible, setVisible] = useState('all')
+    useDocumentTitle('Saved Games')
 
-    console.log(saves)
+    const [visible, setVisible] = useState('all')
 
     const savesToShow = saves.filter((save) => {
         if (visible === 'all') {
