@@ -1,9 +1,16 @@
 import React, { useState } from "react";
 import EditGame from "./EditGame";
 import Save from "./Save";
+import Select from "react-select";
+
+const options = [
+    {value: "study", label: "To Study"},
+    {value: "favorites", label: "Favorites"},
+]
 
 function GameDisplay({ game, games, onSetGames, players, onSetPlayers, user, saves, onSetSaves }) {
     const [display, setDisplay] = useState('game')
+    const [category, setCategory] = useState({value: 'all'})
 
     let canEdit = false
     if (user) {
@@ -20,6 +27,26 @@ function GameDisplay({ game, games, onSetGames, players, onSetPlayers, user, sav
             }
         })
     }
+    
+    function handleSave(e) {
+        e.preventDefault()
+        fetch('/saves', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({category: category.value, game_id: game.id})
+        })
+        .then((r) => {
+            if (r.status === 201) {
+                r.json()
+                .then((save) => {
+                    onSetSaves([...saves, save])
+                    setDisplay('game')
+                })
+            }
+        })
+    }
 
     return (
         <div className="game">
@@ -33,7 +60,15 @@ function GameDisplay({ game, games, onSetGames, players, onSetPlayers, user, sav
                     <button onClick={() => setDisplay('delete')}><img id="delete" src="/delete.png" alt="delete icon" /></button>               
                     : null
                 }
-                <Save game={game} saves={saves} onSetSaves={onSetSaves} />
+                {user ?
+                    <Save 
+                        game={game} 
+                        saves={saves} 
+                        onSetSaves={onSetSaves} 
+                        onSetDisplay={setDisplay}
+                    />
+                    : null
+                }
             </div>
             {display === 'game' ? 
                 <ct-pgn-viewer 
@@ -66,7 +101,26 @@ function GameDisplay({ game, games, onSetGames, players, onSetPlayers, user, sav
                     <h3>Delete Game?</h3>
                     <p>This action cannot be undone.</p>
                     <button className="confirm-button" onClick={handleDelete}>Delete</button>
-                    <button onClick={() => setDisplay('game')}>Close</button>
+                    <button onClick={() => {
+                        setDisplay('game')
+                        setCategory({value: 'all'})
+                        }}>Close</button>
+                </div>
+                : null
+            }
+            {display === 'save' ?
+                <div className="add">
+                    <form onSubmit={handleSave}>
+                        <Select
+                            options={options}
+                            value={category}
+                            placeholder='Choose a category'
+                            onChange={(selected) => setCategory(selected)}
+                        />   
+                        <button className="submit-button" type="submit">Save</button>
+                        <button onClick={() => setDisplay('game')}>Close</button>                     
+                    </form>
+
                 </div>
                 : null
             }

@@ -5,6 +5,7 @@ import SignUp from "./SignUp";
 import NavBar from "./NavBar";
 import Login from "./Login";
 import Home from "./Home";
+import Saved from "./Saved";
 
 function App() {
     const [user, setUser] = useState(null);
@@ -17,21 +18,24 @@ function App() {
         .then((r) => {
             if (r.ok) {
                 r.json()
-                .then((user) => {
-                    setUser(user)
-                    fetch(`user/${user.id}/saved`)
-                    .then ((r) => {
-                        if (r.ok) {
-                            r.json()
-                            .then((saves) => {
-                                setSaves(saves)
-                            })
-                        }
-                    })
-                })
+                .then((user) => setUser(user))
             }
         })
     }, []);
+
+    useEffect(() => {
+        if (user) {
+            fetch(`user/${user.id}/saved`)
+            .then ((r) => {
+                if (r.ok) {
+                    r.json()
+                    .then((saves) => {
+                        setSaves(saves)
+                    })
+                }
+            })            
+        }
+    }, [user])
 
     useEffect(() => {
         fetch("/players", { method: 'GET' })
@@ -73,6 +77,17 @@ function App() {
                     </Route>
                     <Route path='/login'>
                         <Login onLogin={setUser} />
+                    </Route>
+                    <Route path='/saved'>
+                        <Saved 
+                            user={user}
+                            games={games}
+                            onSetGames={setGames}
+                            saves={saves}
+                            onSetSaves={setSaves}
+                            players={players}
+                            onSetPlayers={setPlayers}
+                        />
                     </Route>
                     <Route path='/'>
                         <Home 

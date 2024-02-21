@@ -67,6 +67,7 @@ button {
     margin: 12px 0px;
     text-align: center;
     font-size: 16px;  
+    cursor: pointer;
 }
 
 .players {
@@ -187,4 +188,23 @@ textarea {
 .submit-button {
     background-color: #1B4914;
     margin-right: 30px;
+}
+
+.options {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.options button {
+    width: 200px;
+}
+
+.games-container {
+    display: inline-block;
+    align-items: center;
+    max-width: 800px;
+}
+
+.active {
+    background-color: #50392C;
 }

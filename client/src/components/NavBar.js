@@ -1,5 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const linkStyles = {
     display: "inline-block",
@@ -13,10 +14,13 @@ const linkStyles = {
 };
 
 function NavBar({ user, onSetUser }) {
+    const history = useHistory()
+
     function handleLogout() {
         fetch("/logout", { method: "DELETE"})
         .then((r) => {
             if (r.ok) {
+                history.push('/')
                 onSetUser(null)
             }
         })
@@ -36,6 +40,18 @@ function NavBar({ user, onSetUser }) {
                 >
                     Home
                 </NavLink>
+                {user ? 
+                    <NavLink 
+                        to='/saved'
+                        style={linkStyles}
+                        activeStyle={{
+                            background: "#E2D8D2"
+                        }}
+                    >
+                        Saved
+                    </NavLink>
+                    : null
+                }
                 {user ?
                     null
                     :
