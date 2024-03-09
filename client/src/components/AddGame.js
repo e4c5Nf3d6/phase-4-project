@@ -25,7 +25,8 @@ function AddGame({ games, onSetGames, players, onSetPlayers }) {
 
     const formSchema = yup.object().shape({
         pgn: yup.string()
-            .required("Please enter the game PGN"),
+            .required("Please enter the game PGN")
+            .matches(/^(\s*(?:\[\s*(\w+)\s*"([^"]*)"\s*\]\s*)*(?:(\d+)(\.|\.{3})\s*((?:[PNBRQK]?[a-h]?[1-8]?x?[a-h][1-8](?:\=[PNBRQK])?|O(-?O){1,2})[\+#]?(\s*[\!\?]+)?)(?:\s*((?:[PNBRQK]?[a-h]?[1-8]?x?[a-h][1-8](?:\=[PNBRQK])?|O(-?O){1,2})[\+#]?(\s*[\!\?]+)?))?\s*(?:\(\s*((?:(\d+)(\.|\.{3})\s*((?:[PNBRQK]?[a-h]?[1-8]?x?[a-h][1-8](?:\=[PNBRQK])?|O(-?O){1,2})[\+#]?(\s*[\!\?]+)?)(?:\s*((?:[PNBRQK]a-h]?[1-8]?x?[a-h][1-8](?:\=[PNBRQK])?|O(-?O){1,2})[\+#]?(\s*[\!\?]+)?))'?\s*(?:\((.*)\)\s*)?(?:\{([^\}]*?)\}\s*)?)*)\s*\)\s*)*(?:\{([^\}]*?)\}\s*)?)*(1\-?0|0\-?1|1\/2\-?1\/2|\*)?\s*)$/ , 'Invalid PGN format'),
         white_player: yup.string()
             .required("Please choose the player with the white pieces"),
         black_player: yup.string()
