@@ -55,6 +55,7 @@ function AddPlayer({ players, onSetPlayers }) {
                             type="text"
                             id="name"
                             name="name"
+                            autocomplete="off"
                             placeholder="Player's name"
                             value={formik.values.name}
                             onChange={formik.handleChange}

@@ -58,6 +58,7 @@ function SignUp({ onLogin }) {
                     type="text"
                     id="username"
                     name="username"
+                    autocomplete="off"
                     value={formik.values.username}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
