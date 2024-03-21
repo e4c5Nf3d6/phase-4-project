@@ -122,6 +122,7 @@ function Save({ save, saves, onSetSaves, display, onSetDisplay, game }) {
                         id="comment"
                         name="comment"
                         placeholder="Add a Comment"
+                        autocomplete="off"
                         value={formik.values.comment}
                         onChange={formik.handleChange}   
                     />                
