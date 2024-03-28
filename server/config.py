@@ -6,8 +6,10 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 from flask_bcrypt import Bcrypt
 
+from secret import secret_key
+
 app = Flask(__name__)
-app.secret_key = b'~Erf\xe7\xb4\x11\x88\xc4q\xb1\xed'
+app.secret_key = secret_key
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.json.compact = False
